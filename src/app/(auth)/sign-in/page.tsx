@@ -49,7 +49,7 @@ export default function SignInPage() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [authMethod, setAuthMethod] = useState<"password" | "magic" | "otp">(
-    "password",
+    "password"
   );
   const [magicLinkSent, setMagicLinkSent] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
@@ -136,14 +136,17 @@ export default function SignInPage() {
     }
   }
 
-  // OTP - Send
+  // OTP - Send OTP Code
   async function handleOTPRequest(data: EmailFormValues) {
     setIsLoading(true);
     setError(null);
 
     try {
-      const result = await authClient.signIn.emailOtp({
+      // According to Better Auth emailOTP plugin docs:
+      // Step 1: Send OTP to user's email
+      const result = await authClient.emailOtp.sendVerificationOtp({
         email: data.email,
+        type: "sign-in",
       });
 
       if (result.error) {
@@ -161,13 +164,14 @@ export default function SignInPage() {
     }
   }
 
-  // OTP - Verify
+  // OTP - Verify OTP and Sign In
   async function handleOTPVerify(data: OTPFormValues) {
     setIsLoading(true);
     setError(null);
 
     try {
-      const result = await authClient.signIn.emailOtp.verify({
+      // Step 2: Verify OTP and sign in the user
+      const result = await authClient.signIn.emailOtp({
         email: data.email,
         otp: data.otp,
       });

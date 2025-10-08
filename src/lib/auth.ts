@@ -12,6 +12,15 @@ import {
 } from "./email-templates";
 
 export const auth = betterAuth({
+  // Base URL for Better Auth (CRITICAL for Magic Link to work!)
+  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
+
+  // Secret for encryption and signing (REQUIRED!)
+  secret: process.env.BETTER_AUTH_SECRET || "secret-key-for-development-only",
+
+  // Trusted origins for CORS (allows localhost)
+  trustedOrigins: ["http://localhost:3000"],
+
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: {
