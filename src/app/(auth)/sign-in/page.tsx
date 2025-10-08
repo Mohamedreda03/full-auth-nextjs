@@ -35,24 +35,17 @@ const emailSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
 });
 
-const otpSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  otp: z.string().length(6, "OTP must be 6 digits"),
-});
-
 type SignInFormValues = z.infer<typeof signInSchema>;
 type EmailFormValues = z.infer<typeof emailSchema>;
-type OTPFormValues = z.infer<typeof otpSchema>;
 
 export default function SignInPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [authMethod, setAuthMethod] = useState<"password" | "magic" | "otp">(
+  const [authMethod, setAuthMethod] = useState<"password" | "magic">(
     "password"
   );
   const [magicLinkSent, setMagicLinkSent] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
 
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
@@ -62,11 +55,6 @@ export default function SignInPage() {
   const emailForm = useForm<EmailFormValues>({
     resolver: zodResolver(emailSchema),
     defaultValues: { email: "" },
-  });
-
-  const otpForm = useForm<OTPFormValues>({
-    resolver: zodResolver(otpSchema),
-    defaultValues: { email: "", otp: "" },
   });
 
   // Password Sign In
@@ -136,60 +124,6 @@ export default function SignInPage() {
     }
   }
 
-  // OTP - Send OTP Code
-  async function handleOTPRequest(data: EmailFormValues) {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // According to Better Auth emailOTP plugin docs:
-      // Step 1: Send OTP to user's email
-      const result = await authClient.emailOtp.sendVerificationOtp({
-        email: data.email,
-        type: "sign-in",
-      });
-
-      if (result.error) {
-        setError(result.error.message || "Failed to send OTP");
-        setIsLoading(false);
-        return;
-      }
-
-      setOtpSent(true);
-      otpForm.setValue("email", data.email);
-      setIsLoading(false);
-    } catch {
-      setError("Failed to send OTP");
-      setIsLoading(false);
-    }
-  }
-
-  // OTP - Verify OTP and Sign In
-  async function handleOTPVerify(data: OTPFormValues) {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      // Step 2: Verify OTP and sign in the user
-      const result = await authClient.signIn.emailOtp({
-        email: data.email,
-        otp: data.otp,
-      });
-
-      if (result.error) {
-        setError(result.error.message || "Invalid OTP");
-        setIsLoading(false);
-        return;
-      }
-
-      router.push("/");
-      router.refresh();
-    } catch {
-      setError("Failed to verify OTP");
-      setIsLoading(false);
-    }
-  }
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-900">
       <Card className="w-full max-w-md">
@@ -252,7 +186,6 @@ export default function SignInPage() {
                 onClick={() => {
                   setAuthMethod("password");
                   setMagicLinkSent(false);
-                  setOtpSent(false);
                 }}
                 className={`flex-1 rounded-md px-3 py-2 text-sm font-medium transition ${
                   authMethod === "password"
@@ -267,7 +200,6 @@ export default function SignInPage() {
                 onClick={() => {
                   setAuthMethod("magic");
                   setMagicLinkSent(false);
-                  setOtpSent(false);
                 }}
                 className={`flex-1 rounded-md px-3 py-2 text-sm font-medium transition ${
                   authMethod === "magic"
@@ -276,21 +208,6 @@ export default function SignInPage() {
                 }`}
               >
                 Magic Link
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setAuthMethod("otp");
-                  setMagicLinkSent(false);
-                  setOtpSent(false);
-                }}
-                className={`flex-1 rounded-md px-3 py-2 text-sm font-medium transition ${
-                  authMethod === "otp"
-                    ? "bg-white text-gray-900 shadow dark:bg-gray-950 dark:text-white"
-                    : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                }`}
-              >
-                OTP
               </button>
             </div>
           </div>
@@ -414,110 +331,27 @@ export default function SignInPage() {
               )}
             </div>
           )}
-
-          {/* OTP Form */}
-          {authMethod === "otp" && (
-            <div className="mt-4">
-              {!otpSent ? (
-                <Form {...emailForm}>
-                  <form
-                    onSubmit={emailForm.handleSubmit(handleOTPRequest)}
-                    className="space-y-4"
-                  >
-                    <FormField
-                      control={emailForm.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="email"
-                              placeholder="name@example.com"
-                              disabled={isLoading}
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                          <p className="text-xs text-gray-600 dark:text-gray-400">
-                            We'll send you a one-time code to sign in
-                          </p>
-                        </FormItem>
-                      )}
-                    />
-                    {error && (
-                      <div className="rounded-md bg-red-50 p-3 text-sm text-red-800 dark:bg-red-900/20 dark:text-red-400">
-                        {error}
-                      </div>
-                    )}
-                    <Button
-                      type="submit"
-                      className="w-full"
-                      disabled={isLoading}
-                    >
-                      {isLoading ? "Sending..." : "Send OTP code"}
-                    </Button>
-                  </form>
-                </Form>
-              ) : (
-                <Form {...otpForm}>
-                  <form
-                    onSubmit={otpForm.handleSubmit(handleOTPVerify)}
-                    className="space-y-4"
-                  >
-                    <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-800 dark:bg-blue-900/20 dark:text-blue-400">
-                      <p className="font-semibold">📧 OTP sent!</p>
-                      <p className="mt-1">
-                        Check your email and enter the code below
-                      </p>
-                    </div>
-                    <FormField
-                      control={otpForm.control}
-                      name="otp"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>OTP Code</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="text"
-                              placeholder="000000"
-                              maxLength={6}
-                              disabled={isLoading}
-                              className="text-center text-2xl tracking-widest"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    {error && (
-                      <div className="rounded-md bg-red-50 p-3 text-sm text-red-800 dark:bg-red-900/20 dark:text-red-400">
-                        {error}
-                      </div>
-                    )}
-                    <Button
-                      type="submit"
-                      className="w-full"
-                      disabled={isLoading}
-                    >
-                      {isLoading ? "Verifying..." : "Verify & Sign in"}
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      className="w-full"
-                      onClick={() => setOtpSent(false)}
-                    >
-                      Use different email
-                    </Button>
-                  </form>
-                </Form>
-              )}
-            </div>
-          )}
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
+          <div className="text-center">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={() => {
+                const email =
+                  form.getValues("email") || emailForm.getValues("email");
+                if (email) {
+                  router.push(`/verify-otp?email=${encodeURIComponent(email)}`);
+                } else {
+                  setAuthMethod("magic");
+                }
+              }}
+              disabled={isLoading}
+            >
+              📱 Sign in with OTP
+            </Button>
+          </div>
           <div className="text-sm text-gray-600 dark:text-gray-400">
             Don't have an account?{" "}
             <Link
