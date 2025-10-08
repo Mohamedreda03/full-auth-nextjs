@@ -1,282 +1,284 @@
-# 📚 دليل التوثيق - Documentation Guide
+# 📚 Documentation Guide
 
-مرحباً! هذا دليلك الشامل لفهم نظام التوثيق في المشروع.
-
----
-
-## 🎯 ابدأ من هنا
-
-### أنا جديد - من أين أبدأ؟
-
-```
-1. 📖 اقرأ: docs/QUICK_START.md
-   └─ تعلّم كيف تشغّل المشروع في 5 دقائق
-
-2. 🔧 اقرأ: docs/setup/DATABASE_SETUP.md
-   └─ أنشئ قاعدة البيانات
-
-3. 🔑 اقرأ: docs/setup/ENVIRONMENT_VARIABLES.md
-   └─ أضف المتغيرات البيئية
-```
-
-### أريد تخصيص طرق المصادقة
-
-```
-👉 اذهب إلى: docs/guides/MODULAR_SETUP.md
-
-هذا الملف يشرح لك بالتفصيل:
-✅ كيف تُفعّل أي طريقة
-✅ كيف تُعطّل أي طريقة
-✅ ما الملفات التي تُعدّلها
-✅ ما الملفات التي تحذفها
-```
-
-### لدي مشكلة
-
-```
-👉 اذهب إلى: docs/troubleshooting/
-```
+Welcome! This is your comprehensive guide to understanding the project's documentation system.
 
 ---
 
-## 📁 هيكل التوثيق
+## 🎯 Start Here
+
+### I'm New - Where Do I Start?
+
+```
+1. 📖 Read: docs/QUICK_START.md
+   └─ Learn how to run the project in 5 minutes
+
+2. 🔧 Read: docs/setup/DATABASE_SETUP.md
+   └─ Create the database
+
+3. 🔑 Read: docs/setup/ENVIRONMENT_VARIABLES.md
+   └─ Add environment variables
+```
+
+### I Want to Customize Authentication Methods
+
+```
+👉 Go to: docs/guides/MODULAR_SETUP.md
+
+This file explains in detail:
+✅ How to enable any method
+✅ How to disable any method
+✅ Which files to modify
+✅ Which files to delete
+```
+
+### I Have a Problem
+
+```
+👉 Go to: docs/troubleshooting/
+```
+
+---
+
+## 📁 Documentation Structure
 
 ```
 docs/
 │
-├── README.md                   # 🧭 الدليل الرئيسي - ابدأ من هنا
-├── QUICK_START.md              # ⚡ البدء السريع (5 دقائق)
+├── README.md                   # 🧭 Main guide - start here
+├── QUICK_START.md              # ⚡ Quick start (5 minutes)
 │
-├── setup/                      # 🔧 الإعداد الأساسي
-│   ├── DATABASE_SETUP.md       #    إعداد PostgreSQL
-│   ├── ENVIRONMENT_VARIABLES.md#    جميع المتغيرات البيئية
-│   └── env.example             #    Template للـ .env.local
+├── setup/                      # 🔧 Basic setup
+│   ├── DATABASE_SETUP.md       #    PostgreSQL setup
+│   ├── ENVIRONMENT_VARIABLES.md#    All environment variables
+│   └── env.example             #    Template for .env.local
 │
-├── auth-methods/               # 🔐 دليل كل طريقة مصادقة
-│   ├── README.md               #    نظرة عامة على الطرق
+├── auth-methods/               # 🔐 Each authentication method guide
+│   ├── README.md               #    Overview of methods
 │   ├── EMAIL_PASSWORD.md       #    Email & Password
 │   ├── GOOGLE_OAUTH.md         #    Google Sign-In
 │   ├── MAGIC_LINK.md           #    Magic Link
 │   ├── EMAIL_OTP.md            #    Email OTP
-│   └── PASSWORD_RESET.md       #    Password Reset
+│   ├── PASSWORD_RESET.md       #    Password Reset
+│   └── ADMIN_ROLES.md          #    Admin Roles & Permissions
 │
-├── guides/                     # 📖 الأدلة المتقدمة
-│   ├── MODULAR_SETUP.md ⭐     #    تفعيل/تعطيل أي طريقة
-│   └── EMAIL_SERVICE.md        #    إعداد Resend
+├── guides/                     # 📖 Advanced guides
+│   ├── MODULAR_SETUP.md ⭐     #    Enable/disable any method
+│   └── EMAIL_SERVICE.md        #    Resend setup
 │
-└── troubleshooting/            # 🐛 حل المشاكل
-    └── DATABASE_CONNECTION.md  #    مشاكل الـ Database
+└── troubleshooting/            # 🐛 Problem solving
+    └── DATABASE_CONNECTION.md  #    Database issues
 ```
 
 ---
 
-## 🎓 مسارات التعلم
+## 🎓 Learning Paths
 
-### المسار 1: المبتدئ (أريد تشغيل المشروع فقط)
+### Path 1: Beginner (I just want to run the project)
 
 ```
-الترتيب:
+Order:
 1. docs/QUICK_START.md
 2. docs/setup/DATABASE_SETUP.md
 3. docs/setup/ENVIRONMENT_VARIABLES.md
 4. npm run dev
 
-الوقت: ~15 دقيقة
+Time: ~15 minutes
 ```
 
-### المسار 2: المطور (أريد فهم كل شيء)
+### Path 2: Developer (I want to understand everything)
 
 ```
-الترتيب:
+Order:
 1. docs/QUICK_START.md
-2. docs/setup/ (جميع الملفات)
+2. docs/setup/ (all files)
 3. docs/auth-methods/README.md
 4. docs/guides/MODULAR_SETUP.md
 
-الوقت: ~1 ساعة
+Time: ~1 hour
 ```
 
-### المسار 3: المتقدم (أريد تخصيص المشروع)
+### Path 3: Advanced (I want to customize the project)
 
 ```
-الترتيب:
+Order:
 1. docs/guides/MODULAR_SETUP.md ⭐
-2. اقرأ فقط docs/auth-methods للطرق التي تريدها
-3. docs/guides/EMAIL_SERVICE.md (إذا احتجته)
+2. Read only docs/auth-methods for methods you want
+3. docs/guides/EMAIL_SERVICE.md (if needed)
 
-الوقت: ~30 دقيقة
+Time: ~30 minutes
 ```
 
 ---
 
-## 📖 الملفات الأساسية
+## 📖 Essential Files
 
-### ⭐ الأكثر أهمية
+### ⭐ Most Important
 
-| الملف                                                                        | متى تقرأه        | الوقت    |
-| ---------------------------------------------------------------------------- | ---------------- | -------- |
-| [docs/QUICK_START.md](./docs/QUICK_START.md)                                 | **الأول دائماً** | 5 دقائق  |
-| [docs/guides/MODULAR_SETUP.md](./docs/guides/MODULAR_SETUP.md)               | عند التخصيص      | 15 دقيقة |
-| [docs/setup/ENVIRONMENT_VARIABLES.md](./docs/setup/ENVIRONMENT_VARIABLES.md) | عند الإعداد      | 10 دقائق |
+| File                                                                         | When to Read It  | Time       |
+| ---------------------------------------------------------------------------- | ---------------- | ---------- |
+| [docs/QUICK_START.md](./docs/QUICK_START.md)                                 | **Always First** | 5 minutes  |
+| [docs/guides/MODULAR_SETUP.md](./docs/guides/MODULAR_SETUP.md)               | When customizing | 15 minutes |
+| [docs/setup/ENVIRONMENT_VARIABLES.md](./docs/setup/ENVIRONMENT_VARIABLES.md) | When setting up  | 10 minutes |
 
-### 🔧 إعداد أساسي
+### 🔧 Basic Setup
 
-| الملف                                                                        | الغرض                         |
-| ---------------------------------------------------------------------------- | ----------------------------- |
-| [docs/setup/DATABASE_SETUP.md](./docs/setup/DATABASE_SETUP.md)               | كيف تُنشئ PostgreSQL database |
-| [docs/setup/ENVIRONMENT_VARIABLES.md](./docs/setup/ENVIRONMENT_VARIABLES.md) | جميع المتغيرات مع أمثلة       |
-| [docs/setup/env.example](./docs/setup/env.example)                           | Template للنسخ                |
+| File                                                                         | Purpose                           |
+| ---------------------------------------------------------------------------- | --------------------------------- |
+| [docs/setup/DATABASE_SETUP.md](./docs/setup/DATABASE_SETUP.md)               | How to create PostgreSQL database |
+| [docs/setup/ENVIRONMENT_VARIABLES.md](./docs/setup/ENVIRONMENT_VARIABLES.md) | All variables with examples       |
+| [docs/setup/env.example](./docs/setup/env.example)                           | Template to copy                  |
 
-### 🔐 طرق المصادقة
+### 🔐 Authentication Methods
 
-| الملف                                                                        | الطريقة          | متى تقرأه                    |
-| ---------------------------------------------------------------------------- | ---------------- | ---------------------------- |
-| [docs/auth-methods/EMAIL_PASSWORD.md](./docs/auth-methods/EMAIL_PASSWORD.md) | Email & Password | إذا أردت تخصيصه أو تعطيله    |
-| [docs/auth-methods/GOOGLE_OAUTH.md](./docs/auth-methods/GOOGLE_OAUTH.md)     | Google Sign-In   | لإعداد Google OAuth          |
-| [docs/auth-methods/MAGIC_LINK.md](./docs/auth-methods/MAGIC_LINK.md)         | Magic Link       | لفهم أو تعطيل Magic Link     |
-| [docs/auth-methods/EMAIL_OTP.md](./docs/auth-methods/EMAIL_OTP.md)           | Email OTP        | لفهم أو تعطيل OTP            |
-| [docs/auth-methods/PASSWORD_RESET.md](./docs/auth-methods/PASSWORD_RESET.md) | Password Reset   | لفهم أو تعطيل Password Reset |
+| File                                                                         | Method           | When to Read It                         |
+| ---------------------------------------------------------------------------- | ---------------- | --------------------------------------- |
+| [docs/auth-methods/EMAIL_PASSWORD.md](./docs/auth-methods/EMAIL_PASSWORD.md) | Email & Password | If you want to customize or disable it  |
+| [docs/auth-methods/GOOGLE_OAUTH.md](./docs/auth-methods/GOOGLE_OAUTH.md)     | Google Sign-In   | To set up Google OAuth                  |
+| [docs/auth-methods/MAGIC_LINK.md](./docs/auth-methods/MAGIC_LINK.md)         | Magic Link       | To understand or disable Magic Link     |
+| [docs/auth-methods/EMAIL_OTP.md](./docs/auth-methods/EMAIL_OTP.md)           | Email OTP        | To understand or disable OTP            |
+| [docs/auth-methods/PASSWORD_RESET.md](./docs/auth-methods/PASSWORD_RESET.md) | Password Reset   | To understand or disable Password Reset |
+| [docs/auth-methods/ADMIN_ROLES.md](./docs/auth-methods/ADMIN_ROLES.md)       | Admin Roles      | To understand admin system              |
 
 ---
 
-## 🎯 سيناريوهات شائعة
+## 🎯 Common Scenarios
 
-### السيناريو 1: أريد Email/Password فقط
+### Scenario 1: I Want Email/Password Only
 
 ```
-اقرأ:
+Read:
 1. docs/QUICK_START.md
-2. docs/guides/MODULAR_SETUP.md#السيناريو-1
+2. docs/guides/MODULAR_SETUP.md#scenario-1
 
-احذف:
+Delete:
 - Google OAuth
 - Magic Link
 - Email OTP
 ```
 
-### السيناريو 2: أريد Google Sign-In فقط
+### Scenario 2: I Want Google Sign-In Only
 
 ```
-اقرأ:
+Read:
 1. docs/QUICK_START.md
 2. docs/auth-methods/GOOGLE_OAUTH.md
-3. docs/guides/MODULAR_SETUP.md#السيناريو-2
+3. docs/guides/MODULAR_SETUP.md#scenario-2
 
-احذف:
+Delete:
 - Email & Password
 - Magic Link
 - Email OTP
 ```
 
-### السيناريو 3: أريد Passwordless (Magic Link + OTP)
+### Scenario 3: I Want Passwordless (Magic Link + OTP)
 
 ```
-اقرأ:
+Read:
 1. docs/QUICK_START.md
 2. docs/guides/EMAIL_SERVICE.md
-3. docs/guides/MODULAR_SETUP.md#السيناريو-4
+3. docs/guides/MODULAR_SETUP.md#scenario-4
 
-احذف:
+Delete:
 - Email & Password
 - Google OAuth
 ```
 
-### السيناريو 4: أريد كل شيء
+### Scenario 4: I Want Everything
 
 ```
-اقرأ:
+Read:
 1. docs/QUICK_START.md
 2. docs/setup/ENVIRONMENT_VARIABLES.md
 3. docs/guides/EMAIL_SERVICE.md
 4. docs/auth-methods/GOOGLE_OAUTH.md
 
-لا تحذف شيء! 🎉
+Don't delete anything! 🎉
 ```
 
 ---
 
-## 🔍 كيف تجد ما تريد؟
+## 🔍 How to Find What You Want?
 
-### أسئلة شائعة
+### Common Questions
 
-**"كيف أشغّل المشروع؟"**
+**"How do I run the project?"**
 → `docs/QUICK_START.md`
 
-**"كيف أُعطّل Google Sign-In؟"**
+**"How do I disable Google Sign-In?"**
 → `docs/guides/MODULAR_SETUP.md#2-google-oauth`
 
-**"كيف أحصل على Resend API؟"**
+**"How do I get Resend API?"**
 → `docs/guides/EMAIL_SERVICE.md`
 
-**"ما هي Environment Variables المطلوبة؟"**
+**"What Environment Variables are required?"**
 → `docs/setup/ENVIRONMENT_VARIABLES.md`
 
-**"Database connection error - كيف أحلها؟"**
+**"Database connection error - how do I fix it?"**
 → `docs/troubleshooting/DATABASE_CONNECTION.md`
 
-**"كيف أُعطّل Email Verification؟"**
+**"How do I disable Email Verification?"**
 → `docs/guides/MODULAR_SETUP.md#6-email-verification`
 
-**"ما الفرق بين Magic Link و OTP؟"**
+**"What's the difference between Magic Link and OTP?"**
 → `docs/auth-methods/README.md`
 
 ---
 
-## 📊 مصفوفة التوثيق
+## 📊 Documentation Matrix
 
-### ما تقرأه حسب احتياجك
+### What to Read Based on Your Need
 
-| أحتاج                    | الملفات المطلوبة                           | الترتيب |
-| ------------------------ | ------------------------------------------ | ------- |
-| **البدء من الصفر**       | Quick Start, Database Setup, Env Variables | 1→2→3   |
-| **تخصيص الطرق**          | Modular Setup, Auth Methods                | 1→2     |
-| **إضافة Google**         | Google OAuth Guide, Modular Setup          | 1→2     |
-| **إضافة Email Features** | Email Service, Modular Setup               | 1→2     |
-| **حل مشكلة**             | Troubleshooting, Env Variables             | 1→2     |
-
----
-
-## 💡 نصائح للقراءة
-
-### ✅ افعل
-
-- اقرأ `QUICK_START.md` أولاً **دائماً**
-- اتبع الترتيب في كل دليل
-- جرّب بعد كل خطوة
-- اقرأ فقط ما تحتاجه
-
-### ❌ لا تفعل
-
-- لا تخطئ الترتيب
-- لا تقرأ كل شيء دفعة واحدة
-- لا تطبق بدون فهم
-- لا تحذف ملفات بدون قراءة Modular Guide
+| I Need                 | Required Files                             | Order |
+| ---------------------- | ------------------------------------------ | ----- |
+| **Start from Scratch** | Quick Start, Database Setup, Env Variables | 1→2→3 |
+| **Customize Methods**  | Modular Setup, Auth Methods                | 1→2   |
+| **Add Google**         | Google OAuth Guide, Modular Setup          | 1→2   |
+| **Add Email Features** | Email Service, Modular Setup               | 1→2   |
+| **Fix a Problem**      | Troubleshooting, Env Variables             | 1→2   |
 
 ---
 
-## 🗺️ خريطة القرارات
+## 💡 Reading Tips
+
+### ✅ Do
+
+- Read `QUICK_START.md` first **always**
+- Follow the order in each guide
+- Test after each step
+- Read only what you need
+
+### ❌ Don't
+
+- Don't skip the order
+- Don't read everything at once
+- Don't apply without understanding
+- Don't delete files without reading Modular Guide
+
+---
+
+## 🗺️ Decision Map
 
 ```
-هل المشروع يعمل؟
-├─ لا → docs/QUICK_START.md
-└─ نعم → هل تريد تخصيص؟
-    ├─ نعم → docs/guides/MODULAR_SETUP.md
-    └─ لا → هل لديك مشكلة؟
-        ├─ نعم → docs/troubleshooting/
-        └─ لا → كل شيء تمام! 🎉
+Does the project work?
+├─ No → docs/QUICK_START.md
+└─ Yes → Do you want to customize?
+    ├─ Yes → docs/guides/MODULAR_SETUP.md
+    └─ No → Do you have a problem?
+        ├─ Yes → docs/troubleshooting/
+        └─ No → Everything is perfect! 🎉
 ```
 
 ---
 
-## 📚 موارد إضافية
+## 📚 Additional Resources
 
-### داخل المشروع
+### Within the Project
 
-- `README.md` في root - نظرة عامة
-- `docs/README.md` - فهرس التوثيق
-- `docs/setup/env.example` - Template جاهز
+- `README.md` in root - overview
+- `docs/README.md` - documentation index
+- `docs/setup/env.example` - ready template
 
-### روابط خارجية
+### External Links
 
 - [Better Auth Docs](https://www.better-auth.com)
 - [Drizzle ORM Docs](https://orm.drizzle.team)
@@ -285,51 +287,51 @@ docs/
 
 ---
 
-## 🎯 التوثيق حسب الدور
+## 🎯 Documentation by Role
 
 ### Frontend Developer
 
 ```
-اقرأ:
+Read:
 - docs/QUICK_START.md
 - docs/auth-methods/README.md
 - docs/guides/MODULAR_SETUP.md (UI sections)
 
-تخطَّ:
-- Database setup details (اطلبها من Backend)
+Skip:
+- Database setup details (ask Backend)
 - Email service internals
 ```
 
 ### Backend Developer
 
 ```
-اقرأ:
+Read:
 - docs/QUICK_START.md
-- docs/setup/ (جميع الملفات)
+- docs/setup/ (all files)
 - docs/guides/MODULAR_SETUP.md (Config sections)
 - docs/guides/EMAIL_SERVICE.md
 
-تخطَّ:
+Skip:
 - UI implementation details
 ```
 
 ### Full-Stack Developer
 
 ```
-اقرأ:
-- كل شيء! 😄
-- ابدأ بـ docs/README.md
+Read:
+- Everything! 😄
+- Start with docs/README.md
 ```
 
 ### DevOps/Deployment
 
 ```
-اقرأ:
+Read:
 - docs/setup/ENVIRONMENT_VARIABLES.md
 - docs/setup/DATABASE_SETUP.md
 - README.md (Deployment section)
 
-تركيز على:
+Focus on:
 - Production environment variables
 - Database connection strings
 - Security best practices
@@ -337,28 +339,28 @@ docs/
 
 ---
 
-## 🎓 الخلاصة
+## 🎓 Summary
 
-### الملفات الـ 3 الأساسية
+### The 3 Essential Files
 
-1. **[docs/QUICK_START.md](./docs/QUICK_START.md)** - ابدأ هنا
-2. **[docs/guides/MODULAR_SETUP.md](./docs/guides/MODULAR_SETUP.md)** - للتخصيص
-3. **[docs/setup/ENVIRONMENT_VARIABLES.md](./docs/setup/ENVIRONMENT_VARIABLES.md)** - للإعداد
+1. **[docs/QUICK_START.md](./docs/QUICK_START.md)** - Start here
+2. **[docs/guides/MODULAR_SETUP.md](./docs/guides/MODULAR_SETUP.md)** - For customization
+3. **[docs/setup/ENVIRONMENT_VARIABLES.md](./docs/setup/ENVIRONMENT_VARIABLES.md)** - For setup
 
-### القاعدة الذهبية
+### Golden Rule
 
-> **اقرأ فقط ما تحتاجه، عندما تحتاجه!**
+> **Read only what you need, when you need it!**
 
 ---
 
 <div align="center">
 
-## 🚀 جاهز للبدء؟
+## 🚀 Ready to Start?
 
-**[👉 اقرأ Quick Start الآن](./docs/QUICK_START.md)**
+**[👉 Read Quick Start Now](./docs/QUICK_START.md)**
 
 ---
 
-**التوثيق الجيد = نصف النجاح! 📚**
+**Good documentation = Half the success! 📚**
 
 </div>

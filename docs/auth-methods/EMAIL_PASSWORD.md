@@ -1,39 +1,39 @@
 # 📧 Email & Password Authentication
 
-دليل كامل لطريقة المصادقة باستخدام البريد الإلكتروني وكلمة المرور.
+Complete guide for authentication using email and password.
 
 ---
 
-## ✅ الحالة الحالية
+## ✅ Current Status
 
-**مُفعّل افتراضياً** - جاهز للاستخدام مباشرة!
-
----
-
-## 📋 المتطلبات
-
-### الأساسية (Required)
-
-- ✅ قاعدة بيانات PostgreSQL
-
-### الاختيارية (Optional but Recommended)
-
-- 📧 Resend API (لـ Email Verification)
-- 🔄 Password Reset (موصى به بشدة)
+**Enabled by default** - Ready to use immediately!
 
 ---
 
-## 🔧 الإعداد
+## 📋 Requirements
 
-### 1. قاعدة البيانات
+### Required
 
-يجب أن تكون قد أنشأت الجداول:
+- ✅ PostgreSQL database
+
+### Optional but Recommended
+
+- 📧 Resend API (for Email Verification)
+- 🔄 Password Reset (highly recommended)
+
+---
+
+## 🔧 Setup
+
+### 1. Database
+
+You should have already created the tables:
 
 ```bash
 npm run db:push
 ```
 
-### 2. Configuration في `src/lib/auth.ts`
+### 2. Configuration in `src/lib/auth.ts`
 
 ```typescript
 import { betterAuth } from "better-auth";
@@ -55,9 +55,9 @@ export const auth = betterAuth({
   // Email & Password Configuration
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: true, // ⚠️ يحتاج Resend
+    requireEmailVerification: true, // ⚠️ Needs Resend
     sendResetPassword: async ({ user, url }) => {
-      // ⚠️ يحتاج Resend
+      // ⚠️ Needs Resend
       await sendEmail({
         to: user.email,
         subject: "Reset Your Password",
@@ -68,23 +68,23 @@ export const auth = betterAuth({
 });
 ```
 
-### 3. بدون Email Verification
+### 3. Without Email Verification
 
-إذا لم يكن لديك Resend API بعد:
+If you don't have Resend API yet:
 
 ```typescript
 emailAndPassword: {
   enabled: true,
-  requireEmailVerification: false, // عطّل Email Verification
-  // احذف sendResetPassword إذا لم تحتاجه
+  requireEmailVerification: false, // Disable Email Verification
+  // Remove sendResetPassword if you don't need it
 },
 ```
 
 ---
 
-## 🎨 الواجهات (UI)
+## 🎨 UI (User Interface)
 
-### صفحة التسجيل (`src/app/(auth)/sign-up/page.tsx`)
+### Sign Up Page (`src/app/(auth)/sign-up/page.tsx`)
 
 ```typescript
 import { authClient } from "@/lib/auth-client";
@@ -105,7 +105,7 @@ async function onSubmit(data: SignUpFormValues) {
 }
 ```
 
-### صفحة تسجيل الدخول (`src/app/(auth)/sign-in/page.tsx`)
+### Sign In Page (`src/app/(auth)/sign-in/page.tsx`)
 
 ```typescript
 import { authClient } from "@/lib/auth-client";
@@ -128,26 +128,26 @@ async function onSubmit(data: SignInFormValues) {
 
 ---
 
-## 🔐 الأمان
+## 🔐 Security
 
 ### Hashing
 
-Better Auth يستخدم **bcrypt** تلقائياً لتشفير كلمات المرور.
+Better Auth uses **bcrypt** automatically for password encryption.
 
 ### Password Requirements
 
-يمكنك تخصيص متطلبات كلمة المرور:
+You can customize password requirements:
 
 ```typescript
 emailAndPassword: {
   enabled: true,
-  minPasswordLength: 8,    // الحد الأدنى
-  maxPasswordLength: 128,  // الحد الأقصى
+  minPasswordLength: 8,    // Minimum
+  maxPasswordLength: 128,  // Maximum
   requireEmailVerification: true,
 }
 ```
 
-### في الـ UI (Validation with Zod)
+### In UI (Validation with Zod)
 
 ```typescript
 const signUpSchema = z.object({
@@ -166,17 +166,17 @@ const signUpSchema = z.object({
 
 ## ✉️ Email Verification
 
-### التفعيل
+### Enable
 
 ```typescript
 emailAndPassword: {
   enabled: true,
-  requireEmailVerification: true, // المستخدم يجب أن يفعّل بريده
+  requireEmailVerification: true, // User must verify email
 },
 
 emailVerification: {
-  sendOnSignUp: true, // أرسل email عند التسجيل
-  autoSignInAfterVerification: true, // دخول تلقائي بعد التفعيل
+  sendOnSignUp: true, // Send email on signup
+  autoSignInAfterVerification: true, // Auto sign-in after verification
   sendVerificationEmail: async ({ user, url }) => {
     await sendEmail({
       to: user.email,
@@ -187,19 +187,19 @@ emailVerification: {
 },
 ```
 
-### التدفق (Flow)
+### Flow
 
-1. المستخدم يسجل حساب جديد
-2. Better Auth يُرسل email verification
-3. المستخدم يضغط الرابط في البريد
-4. Better Auth يفعّل الحساب
-5. دخول تلقائي (إذا `autoSignInAfterVerification: true`)
+1. User creates new account
+2. Better Auth sends email verification
+3. User clicks link in email
+4. Better Auth activates account
+5. Auto sign-in (if `autoSignInAfterVerification: true`)
 
 ---
 
 ## 🔄 Password Reset
 
-### التفعيل
+### Enable
 
 ```typescript
 emailAndPassword: {
@@ -214,7 +214,7 @@ emailAndPassword: {
 },
 ```
 
-### الواجهات المطلوبة
+### Required UI
 
 1. **Forgot Password** (`src/app/(auth)/forgot-password/page.tsx`)
 
@@ -229,13 +229,13 @@ emailAndPassword: {
    ```typescript
    await authClient.resetPassword({
      newPassword: data.password,
-     token, // من URL query parameter
+     token, // From URL query parameter
    });
    ```
 
 ---
 
-## 📁 الملفات المتأثرة
+## 📁 Affected Files
 
 ### Core Files (Required)
 
@@ -260,84 +260,84 @@ emailAndPassword: {
 
 ---
 
-## 🧪 الاختبار
+## 🧪 Testing
 
-### 1. التسجيل الأساسي (بدون Email Verification)
+### 1. Basic Registration (without Email Verification)
 
 ```bash
-# 1. تأكد من أن DB جاهزة
+# 1. Make sure DB is ready
 npm run db:push
 
-# 2. شغّل التطبيق
+# 2. Run application
 npm run dev
 
-# 3. افتح
+# 3. Open
 http://localhost:3000/sign-up
 
-# 4. سجل حساب جديد
+# 4. Create new account
 Email: test@example.com
 Password: Test1234
 Name: Test User
 
-# 5. يجب أن تنجح العملية
+# 5. Should succeed
 ```
 
-### 2. التسجيل مع Email Verification
+### 2. Registration with Email Verification
 
 ```bash
-# 1. أضف Resend API في .env.local
+# 1. Add Resend API in .env.local
 RESEND_API_KEY="re_..."
 EMAIL_FROM="onboarding@resend.dev"
 
-# 2. تأكد من requireEmailVerification: true
+# 2. Make sure requireEmailVerification: true
 
-# 3. سجل حساب جديد
+# 3. Create new account
 
-# 4. تحقق من بريدك الإلكتروني
+# 4. Check your email
 
-# 5. اضغط رابط التفعيل
+# 5. Click verification link
 ```
 
 ### 3. Password Reset
 
 ```bash
-# 1. اذهب إلى sign-in
+# 1. Go to sign-in
 
-# 2. اضغط "Forgot password?"
+# 2. Click "Forgot password?"
 
-# 3. أدخل بريدك
+# 3. Enter your email
 
-# 4. تحقق من البريد
+# 4. Check your email
 
-# 5. اضغط رابط Reset
+# 5. Click Reset link
 
-# 6. أدخل كلمة مرور جديدة
+# 6. Enter new password
 ```
 
 ---
 
-## ❌ التعطيل
+## ❌ Disable
 
-إذا أردت تعطيل Email & Password تماماً:
+If you want to completely disable Email & Password:
 
-### 1. حذف من `src/lib/auth.ts`
+### 1. Remove from `src/lib/auth.ts`
 
 ```typescript
-// احذف أو عطّل
+// Remove or disable
 // emailAndPassword: {
 //   enabled: true,
 //   ...
 // },
 ```
 
-### 2. حذف UI Components
+### 2. Remove UI Components
 
 ```bash
-# احذف password forms من sign-in و sign-up
-# أو احذف الصفحات بالكامل إذا لم تستخدم طرق أخرى
+# Remove password forms from sign-in and sign-up
+# Or remove pages entirely if not using other methods
 ```
 
-### 3. حذف Password Reset Pages
+### 3. Remove Password Reset Pages
 
 ```bash
 rm src/app/(auth)/forgot-password/page.tsx
@@ -346,12 +346,12 @@ rm src/app/(auth)/reset-password/page.tsx
 
 ---
 
-## 🐛 المشاكل الشائعة
+## 🐛 Common Issues
 
 ### 1. "Email already exists"
 
 ```typescript
-// في sign-up handler
+// In sign-up handler
 if (result.error?.message === "User already exists") {
   setError("This email is already registered. Please sign in.");
 }
@@ -360,17 +360,17 @@ if (result.error?.message === "User already exists") {
 ### 2. "Invalid credentials"
 
 ```typescript
-// في sign-in handler
+// In sign-in handler
 if (result.error) {
   setError("Invalid email or password");
 }
 ```
 
-### 3. Email Verification لا يُرسل
+### 3. Email Verification not sending
 
 ```typescript
-// تأكد من:
-// 1. RESEND_API_KEY موجود في .env.local
+// Make sure:
+// 1. RESEND_API_KEY exists in .env.local
 // 2. requireEmailVerification: true
 // 3. sendVerificationEmail function implemented
 // 4. check terminal for email logs
@@ -378,7 +378,7 @@ if (result.error) {
 
 ---
 
-## 📚 المزيد
+## 📚 More
 
 - [Password Reset Guide](./PASSWORD_RESET.md)
 - [Email Service Setup](../guides/EMAIL_SERVICE.md)
@@ -387,4 +387,4 @@ if (result.error) {
 
 ---
 
-**Email & Password هي الطريقة الأكثر شيوعاً وموثوقية! 🔐**
+**Email & Password is the most common and reliable method! 🔐**

@@ -1,203 +1,203 @@
 # 🔐 Authentication Methods Overview
 
-نظرة عامة على جميع طرق المصادقة المتاحة في التطبيق.
+Overview of all available authentication methods in the application.
 
 ---
 
-## 📚 الطرق المتاحة
+## 📚 Available Methods
 
 ### 1. [Email & Password](./EMAIL_PASSWORD.md)
 
-**الحالة**: ✅ مُفعّل افتراضياً
+**Status**: ✅ Enabled by default
 
-الطريقة التقليدية للمصادقة باستخدام البريد الإلكتروني وكلمة المرور.
+Traditional authentication method using email and password.
 
-**المميزات**:
+**Features**:
 
-- ✅ بسيطة ومألوفة
-- ✅ لا تحتاج خدمات خارجية (للتسجيل الأساسي)
-- ✅ تعمل بدون اتصال بالإنترنت (بعد التسجيل)
+- ✅ Simple and familiar
+- ✅ No external services needed (for basic registration)
+- ✅ Works offline (after registration)
 
-**المتطلبات**:
+**Requirements**:
 
-- قاعدة بيانات PostgreSQL
-- Resend API (للـ email verification فقط)
+- PostgreSQL database
+- Resend API (for email verification only)
 
 ---
 
 ### 2. [Google OAuth](./GOOGLE_OAUTH.md)
 
-**الحالة**: ✅ مُفعّل افتراضياً
+**Status**: ✅ Enabled by default
 
-تسجيل دخول بنقرة واحدة باستخدام حساب Google.
+One-click sign-in using Google account.
 
-**المميزات**:
+**Features**:
 
-- ✅ تجربة مستخدم سريعة
-- ✅ لا حاجة لإدارة كلمات مرور
-- ✅ موثوق وآمن
+- ✅ Fast user experience
+- ✅ No password management needed
+- ✅ Reliable and secure
 
-**المتطلبات**:
+**Requirements**:
 
-- قاعدة بيانات PostgreSQL
+- PostgreSQL database
 - Google Cloud credentials
 
 ---
 
 ### 3. [Magic Link](./MAGIC_LINK.md)
 
-**الحالة**: ⚠️ يحتاج Resend API
+**Status**: ⚠️ Needs Resend API
 
-تسجيل دخول بدون كلمة مرور عبر رابط يُرسل للبريد الإلكتروني.
+Passwordless sign-in via link sent to email.
 
-**المميزات**:
+**Features**:
 
-- ✅ لا حاجة لتذكر كلمة مرور
-- ✅ آمن وسهل الاستخدام
-- ✅ مثالي للتطبيقات التي تُستخدم نادراً
+- ✅ No password to remember
+- ✅ Secure and easy to use
+- ✅ Perfect for rarely used apps
 
-**المتطلبات**:
+**Requirements**:
 
-- قاعدة بيانات PostgreSQL
+- PostgreSQL database
 - Resend API key
 
 ---
 
 ### 4. [Email OTP](./EMAIL_OTP.md)
 
-**الحالة**: ⚠️ يحتاج Resend API
+**Status**: ⚠️ Needs Resend API
 
-تسجيل دخول باستخدام رمز لمرة واحدة (6 أرقام) يُرسل للبريد.
+Sign-in using one-time code (6 digits) sent to email.
 
-**المميزات**:
+**Features**:
 
-- ✅ أمان عالي
-- ✅ تجربة مألوفة (مثل تطبيقات البنوك)
-- ✅ لا حاجة لتذكر كلمة مرور
+- ✅ High security
+- ✅ Familiar experience (like banking apps)
+- ✅ No password to remember
 
-**المتطلبات**:
+**Requirements**:
 
-- قاعدة بيانات PostgreSQL
+- PostgreSQL database
 - Resend API key
 
 ---
 
 ### 5. [Password Reset](./PASSWORD_RESET.md)
 
-**الحالة**: ⚠️ يحتاج Resend API
+**Status**: ⚠️ Needs Resend API
 
-إعادة تعيين كلمة المرور للمستخدمين الذين نسوها.
+Password reset for users who forgot their password.
 
-**المميزات**:
+**Features**:
 
-- ✅ ضروري لتحسين تجربة المستخدم
-- ✅ آمن (يستخدم tokens ذات صلاحية محدودة)
+- ✅ Essential for better user experience
+- ✅ Secure (uses time-limited tokens)
 
-**المتطلبات**:
+**Requirements**:
 
-- Email & Password مُفعّل
-- قاعدة بيانات PostgreSQL
+- Email & Password enabled
+- PostgreSQL database
 - Resend API key
 
 ---
 
 ### 6. [Admin Roles & Permissions](./ADMIN_ROLES.md)
 
-**الحالة**: ✅ مُفعّل
+**Status**: ✅ Enabled
 
-نظام صلاحيات وأدوار متقدم لإدارة المستخدمين.
+Advanced role and permission system for user management.
 
-**المميزات**:
+**Features**:
 
-- ✅ نظام أدوار مرن (Admin, User)
-- ✅ حظر/إلغاء حظر المستخدمين
-- ✅ إدارة كاملة للمستخدمين
-- ✅ قابل للتوسع لأدوار مخصصة
+- ✅ Flexible role system (Admin, User)
+- ✅ Ban/unban users
+- ✅ Complete user management
+- ✅ Extensible for custom roles
 
-**المتطلبات**:
+**Requirements**:
 
-- قاعدة بيانات PostgreSQL
-- Better Auth مُفعّل
+- PostgreSQL database
+- Better Auth enabled
 
 ---
 
-## 🔄 العلاقات بين الطرق
+## 🔄 Relationships Between Methods
 
 ```
 ┌─────────────────────┐
 │  Email & Password   │ ◄─┐
 └─────────────────────┘   │
-          │               │ يعتمد على
+          │               │ depends on
           ├─ Password Reset
-          └─ Email Verification (اختياري)
+          └─ Email Verification (optional)
 
 ┌─────────────────────┐
-│   Google OAuth      │ (مستقل)
+│   Google OAuth      │ (independent)
 └─────────────────────┘
 
 ┌─────────────────────┐
-│    Magic Link       │ (مستقل)
+│    Magic Link       │ (independent)
 └─────────────────────┘
 
 ┌─────────────────────┐
-│    Email OTP        │ (مستقل)
+│    Email OTP        │ (independent)
 └─────────────────────┘
 ```
 
 ---
 
-## 📊 جدول المقارنة
+## 📊 Comparison Table
 
-| الطريقة            | سهولة الاستخدام | الأمان     | يحتاج Email Service | يحتاج Third-party |
-| ------------------ | --------------- | ---------- | ------------------- | ----------------- |
-| **Email/Password** | ⭐⭐⭐          | ⭐⭐⭐⭐   | ⚠️ للـ verification | ❌ لا             |
-| **Google OAuth**   | ⭐⭐⭐⭐⭐      | ⭐⭐⭐⭐⭐ | ❌ لا               | ✅ Google         |
-| **Magic Link**     | ⭐⭐⭐⭐        | ⭐⭐⭐⭐   | ✅ نعم              | ❌ لا             |
-| **Email OTP**      | ⭐⭐⭐⭐        | ⭐⭐⭐⭐⭐ | ✅ نعم              | ❌ لا             |
-
----
-
-## 🎯 متى تستخدم كل طريقة؟
-
-### استخدم Email & Password عندما:
-
-- ✅ تريد طريقة تقليدية ومألوفة
-- ✅ لا تريد الاعتماد على خدمات خارجية (في البداية)
-- ✅ تستهدف جمهور تقني
-
-### استخدم Google OAuth عندما:
-
-- ✅ تريد onboarding سريع
-- ✅ تستهدف مستخدمين غير تقنيين
-- ✅ تريد تقليل friction في التسجيل
-
-### استخدم Magic Link عندما:
-
-- ✅ التطبيق يُستخدم بشكل غير منتظم
-- ✅ تريد تحسين UX
-- ✅ الأمان أهم من السرعة
-
-### استخدم Email OTP عندما:
-
-- ✅ تحتاج أمان عالي (مثل تطبيقات مالية)
-- ✅ المستخدمون معتادون على OTPs
-- ✅ تريد 2FA مدمج
+| Method             | Ease of Use | Security   | Needs Email Service | Needs Third-party |
+| ------------------ | ----------- | ---------- | ------------------- | ----------------- |
+| **Email/Password** | ⭐⭐⭐      | ⭐⭐⭐⭐   | ⚠️ For verification | ❌ No             |
+| **Google OAuth**   | ⭐⭐⭐⭐⭐  | ⭐⭐⭐⭐⭐ | ❌ No               | ✅ Google         |
+| **Magic Link**     | ⭐⭐⭐⭐    | ⭐⭐⭐⭐   | ✅ Yes              | ❌ No             |
+| **Email OTP**      | ⭐⭐⭐⭐    | ⭐⭐⭐⭐⭐ | ✅ Yes              | ❌ No             |
 
 ---
 
-## 🚀 البدء السريع
+## 🎯 When to Use Each Method?
 
-للحصول على نظرة سريعة على ما يعمل الآن، اقرأ:
+### Use Email & Password when:
+
+- ✅ You want a traditional and familiar method
+- ✅ You don't want to depend on external services (initially)
+- ✅ You're targeting technical users
+
+### Use Google OAuth when:
+
+- ✅ You want fast onboarding
+- ✅ You're targeting non-technical users
+- ✅ You want to reduce sign-up friction
+
+### Use Magic Link when:
+
+- ✅ The app is used infrequently
+- ✅ You want to improve UX
+- ✅ Security is more important than speed
+
+### Use Email OTP when:
+
+- ✅ You need high security (like financial apps)
+- ✅ Users are familiar with OTPs
+- ✅ You want built-in 2FA
+
+---
+
+## 🚀 Quick Start
+
+For a quick overview of what works now, read:
 
 - [Quick Start Guide](../QUICK_START.md)
 
-لمعرفة كيفية تفعيل/تعطيل كل طريقة:
+To learn how to enable/disable each method:
 
-- [Modular Setup Guide](../guides/MODULAR_SETUP.md) ⭐ **موصى به**
+- [Modular Setup Guide](../guides/MODULAR_SETUP.md) ⭐ **Recommended**
 
 ---
 
-## 📚 روابط مفيدة
+## 📚 Useful Links
 
 - [Better Auth Documentation](https://www.better-auth.com)
 - [Email Service Setup](../guides/EMAIL_SERVICE.md)

@@ -1,105 +1,105 @@
-# 📚 Documentation - التوثيق الكامل
+# 📚 Complete Documentation
 
-مرحباً بك في توثيق نظام المصادقة الكامل!
-
----
-
-## 🚀 ابدأ من هنا
-
-### جديد في المشروع؟
-
-👉 **[Quick Start Guide](./QUICK_START.md)** - ابدأ في 5 دقائق!
-
-### تريد تخصيص طرق المصادقة؟
-
-👉 **[Modular Setup Guide](./guides/MODULAR_SETUP.md)** - تفعيل/تعطيل أي طريقة
+Welcome to the complete authentication system documentation!
 
 ---
 
-## 📋 الأقسام الرئيسية
+## 🚀 Start Here
 
-### 🔧 الإعداد (Setup)
+### New to the project?
 
-| الدليل                                                    | الوصف                           | الأولوية |
-| --------------------------------------------------------- | ------------------------------- | -------- |
-| [Environment Variables](./setup/ENVIRONMENT_VARIABLES.md) | جميع المتغيرات البيئية المطلوبة | 🔴 مطلوب |
-| [Database Setup](./setup/DATABASE_SETUP.md)               | إعداد PostgreSQL وإنشاء الجداول | 🔴 مطلوب |
-| [env.example](./setup/env.example)                        | Template للمتغيرات البيئية      | 📝 مرجع  |
+👉 **[Quick Start Guide](./QUICK_START.md)** - Get started in 5 minutes!
 
-### 🔐 طرق المصادقة (Authentication Methods)
+### Want to customize authentication methods?
 
-| الطريقة              | الحالة          | الدليل                                            |
-| -------------------- | --------------- | ------------------------------------------------- |
-| **Email & Password** | ✅ مُفعّل       | [الدليل الكامل](./auth-methods/EMAIL_PASSWORD.md) |
-| **Google OAuth**     | ✅ مُفعّل       | [الدليل الكامل](./auth-methods/GOOGLE_OAUTH.md)   |
-| **Magic Link**       | ⚠️ يحتاج Resend | [الدليل الكامل](./auth-methods/MAGIC_LINK.md)     |
-| **Email OTP**        | ⚠️ يحتاج Resend | [الدليل الكامل](./auth-methods/EMAIL_OTP.md)      |
-| **Password Reset**   | ⚠️ يحتاج Resend | [الدليل الكامل](./auth-methods/PASSWORD_RESET.md) |
-| **Admin Roles**      | ✅ مُفعّل       | [الدليل الكامل](./auth-methods/ADMIN_ROLES.md)    |
-
-**نظرة شاملة**: [Authentication Methods Overview](./auth-methods/README.md)
-
-### 📖 الأدلة المتقدمة (Guides)
-
-| الدليل                                        | الوصف                         | متى تقرأه                  |
-| --------------------------------------------- | ----------------------------- | -------------------------- |
-| [Modular Setup](./guides/MODULAR_SETUP.md) ⭐ | كيفية تفعيل/تعطيل كل طريقة    | **عند التخصيص**            |
-| [Email Service](./guides/EMAIL_SERVICE.md)    | إعداد Resend لإرسال الإيميلات | عند استخدام email features |
-
-### 🐛 حل المشاكل (Troubleshooting)
-
-| المشكلة                                                               | الحل                          |
-| --------------------------------------------------------------------- | ----------------------------- |
-| [Database Connection Error](./troubleshooting/DATABASE_CONNECTION.md) | مشاكل الاتصال بقاعدة البيانات |
-| Common Issues                                                         | قريباً                        |
+👉 **[Modular Setup Guide](./guides/MODULAR_SETUP.md)** - Enable/disable any method
 
 ---
 
-## 🎯 السيناريوهات السريعة
+## 📋 Main Sections
 
-### أريد استخدام Email/Password فقط
+### 🔧 Setup
+
+| Guide                                                     | Description                         | Priority     |
+| --------------------------------------------------------- | ----------------------------------- | ------------ |
+| [Environment Variables](./setup/ENVIRONMENT_VARIABLES.md) | All required environment variables  | 🔴 Required  |
+| [Database Setup](./setup/DATABASE_SETUP.md)               | PostgreSQL setup and table creation | 🔴 Required  |
+| [env.example](./setup/env.example)                        | Environment variables template      | 📝 Reference |
+
+### 🔐 Authentication Methods
+
+| Method               | Status          | Guide                                              |
+| -------------------- | --------------- | -------------------------------------------------- |
+| **Email & Password** | ✅ Enabled      | [Complete Guide](./auth-methods/EMAIL_PASSWORD.md) |
+| **Google OAuth**     | ✅ Enabled      | [Complete Guide](./auth-methods/GOOGLE_OAUTH.md)   |
+| **Magic Link**       | ⚠️ Needs Resend | [Complete Guide](./auth-methods/MAGIC_LINK.md)     |
+| **Email OTP**        | ⚠️ Needs Resend | [Complete Guide](./auth-methods/EMAIL_OTP.md)      |
+| **Password Reset**   | ⚠️ Needs Resend | [Complete Guide](./auth-methods/PASSWORD_RESET.md) |
+| **Admin Roles**      | ✅ Enabled      | [Complete Guide](./auth-methods/ADMIN_ROLES.md)    |
+
+**Overview**: [Authentication Methods Overview](./auth-methods/README.md)
+
+### 📖 Advanced Guides
+
+| Guide                                         | Description                       | When to read it           |
+| --------------------------------------------- | --------------------------------- | ------------------------- |
+| [Modular Setup](./guides/MODULAR_SETUP.md) ⭐ | How to enable/disable each method | **When customizing**      |
+| [Email Service](./guides/EMAIL_SERVICE.md)    | Setting up Resend for emails      | When using email features |
+
+### 🐛 Troubleshooting
+
+| Issue                                                                 | Solution                   |
+| --------------------------------------------------------------------- | -------------------------- |
+| [Database Connection Error](./troubleshooting/DATABASE_CONNECTION.md) | Database connection issues |
+| Common Issues                                                         | Coming soon                |
+
+---
+
+## 🎯 Quick Scenarios
+
+### I want to use Email/Password only
 
 ```
-1. ✅ اقرأ: Quick Start Guide
-2. ✅ اقرأ: Database Setup
-3. ✅ اقرأ: Environment Variables
-4. ⚠️ اقرأ: Modular Setup (لإزالة الطرق الأخرى)
+1. ✅ Read: Quick Start Guide
+2. ✅ Read: Database Setup
+3. ✅ Read: Environment Variables
+4. ⚠️ Read: Modular Setup (to remove other methods)
 ```
 
-### أريد استخدام Email/Password + Google
+### I want to use Email/Password + Google
 
 ```
-1. ✅ اقرأ: Quick Start Guide
-2. ✅ اقرأ: Database Setup
-3. ✅ اقرأ: Environment Variables
-4. ✅ اقرأ: Google OAuth Guide
+1. ✅ Read: Quick Start Guide
+2. ✅ Read: Database Setup
+3. ✅ Read: Environment Variables
+4. ✅ Read: Google OAuth Guide
 ```
 
-### أريد استخدام جميع الطرق
+### I want to use all methods
 
 ```
-1. ✅ اقرأ: Quick Start Guide
-2. ✅ اقرأ: Database Setup
-3. ✅ اقرأ: Environment Variables
-4. ✅ اقرأ: Email Service Guide
-5. ✅ اقرأ: Google OAuth Guide
+1. ✅ Read: Quick Start Guide
+2. ✅ Read: Database Setup
+3. ✅ Read: Environment Variables
+4. ✅ Read: Email Service Guide
+5. ✅ Read: Google OAuth Guide
 ```
 
-### لدي مشكلة
+### I have a problem
 
 ```
-1. 🐛 اقرأ: Troubleshooting Guide
-2. 📧 تحقق من terminal logs
-3. ✅ تأكد من Environment Variables
+1. 🐛 Read: Troubleshooting Guide
+2. 📧 Check terminal logs
+3. ✅ Verify Environment Variables
 ```
 
 ---
 
-## 📁 هيكل التوثيق
+## 📁 Documentation Structure
 
 ```
 docs/
-├── README.md (أنت هنا)
+├── README.md (you are here)
 ├── QUICK_START.md
 │
 ├── setup/
@@ -113,7 +113,8 @@ docs/
 │   ├── GOOGLE_OAUTH.md
 │   ├── MAGIC_LINK.md
 │   ├── EMAIL_OTP.md
-│   └── PASSWORD_RESET.md
+│   ├── PASSWORD_RESET.md
+│   └── ADMIN_ROLES.md
 │
 ├── guides/
 │   ├── MODULAR_SETUP.md ⭐
@@ -125,7 +126,7 @@ docs/
 
 ---
 
-## 🔗 روابط خارجية مفيدة
+## 🔗 Useful External Links
 
 ### Better Auth
 
@@ -155,79 +156,77 @@ docs/
 
 ---
 
-## 📝 ملاحظات
+## 📝 Notes
 
-### الترتيب الموصى به للقراءة
+### Recommended Reading Order
 
-1. **للمبتدئين**:
+1. **For beginners**:
    - Quick Start Guide
    - Database Setup
    - Environment Variables
-2. **للتخصيص**:
-
+2. **For customization**:
    - Modular Setup Guide
    - Auth Methods Overview
    - Specific method guides
-
-3. **عند المشاكل**:
+3. **When having issues**:
    - Troubleshooting guides
    - Check terminal logs
    - Verify environment variables
 
-### الملفات المُوصى بها حسب الحاجة
+### Recommended Files by Need
 
-| الحاجة                | الملفات                      |
-| --------------------- | ---------------------------- |
-| **البدء السريع**      | Quick Start, Database Setup  |
-| **الإعداد الكامل**    | جميع ملفات setup/            |
-| **تفصيل طريقة معينة** | ملف الطريقة في auth-methods/ |
-| **إزالة طرق**         | Modular Setup Guide          |
-| **إعداد Email**       | Email Service Guide          |
-| **مشاكل DB**          | Database Connection Guide    |
-
----
-
-## 💡 نصائح
-
-### ✅ افعل:
-
-- اقرأ Quick Start أولاً
-- استخدم env.example كـ template
-- تحقق من terminal logs عند المشاكل
-- اختبر كل feature بعد تفعيلها
-
-### ❌ لا تفعل:
-
-- لا تخطئ الترتيب (Database → Env → Auth Methods)
-- لا تنسَ إعادة تشغيل npm run dev بعد تغيير .env
-- لا تحذف core files بدون قراءة Modular Guide
+| Need                | Files                        |
+| ------------------- | ---------------------------- |
+| **Quick start**     | Quick Start, Database Setup  |
+| **Complete setup**  | All setup/ files             |
+| **Specific method** | Method file in auth-methods/ |
+| **Remove methods**  | Modular Setup Guide          |
+| **Email setup**     | Email Service Guide          |
+| **DB issues**       | Database Connection Guide    |
 
 ---
 
-## 🆘 الدعم
+## 💡 Tips
 
-### لديك مشكلة؟
+### ✅ Do:
 
-1. تحقق من [Troubleshooting Guide](./troubleshooting/DATABASE_CONNECTION.md)
-2. راجع [Environment Variables Guide](./setup/ENVIRONMENT_VARIABLES.md)
-3. تأكد من إعداد [Database](./setup/DATABASE_SETUP.md) بشكل صحيح
+- Read Quick Start first
+- Use env.example as template
+- Check terminal logs when having issues
+- Test each feature after enabling it
 
-### تريد feature جديدة؟
+### ❌ Don't:
 
-- اقرأ [Modular Setup](./guides/MODULAR_SETUP.md) لمعرفة ما هو متاح
-- تحقق من [Better Auth Docs](https://www.better-auth.com) للميزات الإضافية
+- Skip the order (Database → Env → Auth Methods)
+- Forget to restart npm run dev after changing .env
+- Delete core files without reading Modular Guide
 
 ---
 
-## 🎉 جاهز للبدء؟
+## 🆘 Support
 
-👉 ابدأ مع **[Quick Start Guide](./QUICK_START.md)**
+### Having an issue?
+
+1. Check [Troubleshooting Guide](./troubleshooting/DATABASE_CONNECTION.md)
+2. Review [Environment Variables Guide](./setup/ENVIRONMENT_VARIABLES.md)
+3. Make sure [Database](./setup/DATABASE_SETUP.md) is set up correctly
+
+### Want a new feature?
+
+- Read [Modular Setup](./guides/MODULAR_SETUP.md) to see what's available
+- Check [Better Auth Docs](https://www.better-auth.com) for additional features
+
+---
+
+## 🎉 Ready to start?
+
+👉 Start with **[Quick Start Guide](./QUICK_START.md)**
 
 ---
 
 <div align="center">
 
-**صُنع بـ ❤️ باستخدام Better Auth**
+**Made with ❤️ using Better Auth**
 
 [Better Auth](https://www.better-auth.com) • [GitHub](https://github.com/better-auth/better-auth)
 

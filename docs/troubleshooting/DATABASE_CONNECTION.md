@@ -1,60 +1,60 @@
-# حل مشكلة الاتصال بقاعدة البيانات
+# Database Connection Issue Fix
 
-## المشكلة:
+## Problem:
 
 ```
 PostgresError: password authentication failed for user "user"
 ```
 
-## السبب:
+## Cause:
 
-ملف `.env.local` يحتوي على قيم افتراضية وليست معلومات قاعدة البيانات الحقيقية.
+The `.env.local` file contains default values instead of real database information.
 
-## الحل:
+## Solution:
 
-### 1. تحديد معلومات PostgreSQL الخاصة بك:
+### 1. Identify Your PostgreSQL Information:
 
-افتح **pgAdmin** أو **psql** واحصل على:
+Open **pgAdmin** or **psql** and get:
 
-- اسم المستخدم (عادة: `postgres`)
-- كلمة المرور (التي أدخلتها عند تثبيت PostgreSQL)
-- اسم قاعدة البيانات (يجب أن تكون قد أنشأتها مسبقاً)
+- Username (usually: `postgres`)
+- Password (the one you entered when installing PostgreSQL)
+- Database name (you should have created it beforehand)
 
-### 2. إنشاء قاعدة بيانات (إذا لم تكن موجودة):
+### 2. Create Database (if it doesn't exist):
 
-افتح **pgAdmin** أو **psql** ونفذ:
+Open **pgAdmin** or **psql** and run:
 
 ```sql
 CREATE DATABASE nextjs_auth;
 ```
 
-أو استخدم أي اسم تريده لقاعدة البيانات.
+Or use any name you want for the database.
 
-### 3. تحديث ملف `.env.local`:
+### 3. Update `.env.local` File:
 
-في جذر المشروع، افتح ملف `.env.local` وغيّر هذا السطر:
+In the project root, open `.env.local` and change this line:
 
-**قبل (خطأ):**
+**Before (wrong):**
 
 ```env
 DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
 ```
 
-**بعد (صحيح):**
+**After (correct):**
 
 ```env
 DATABASE_URL="postgresql://postgres:YOUR_ACTUAL_PASSWORD@localhost:5432/nextjs_auth"
 ```
 
-استبدل:
+Replace:
 
-- `YOUR_ACTUAL_PASSWORD` بكلمة المرور الحقيقية لـ PostgreSQL
-- `nextjs_auth` باسم قاعدة البيانات التي أنشأتها
+- `YOUR_ACTUAL_PASSWORD` with the real PostgreSQL password
+- `nextjs_auth` with the database name you created
 
-### 4. مثال كامل لملف `.env.local`:
+### 4. Complete `.env.local` File Example:
 
 ```env
-# Database - ضع معلومات قاعدة البيانات الحقيقية
+# Database - put your real database information
 DATABASE_URL="postgresql://postgres:mypassword123@localhost:5432/nextjs_auth"
 
 # App URL
@@ -64,98 +64,98 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 BETTER_AUTH_SECRET="some-random-secret-key-change-in-production"
 BETTER_AUTH_URL="http://localhost:3000"
 
-# Google OAuth (اختياري)
+# Google OAuth (optional)
 GOOGLE_CLIENT_ID=""
 GOOGLE_CLIENT_SECRET=""
 ```
 
-### 5. التحقق من أن PostgreSQL يعمل:
+### 5. Verify PostgreSQL is Running:
 
-#### على Windows:
+#### On Windows:
 
-1. افتح "Services" (خدمات Windows)
-2. ابحث عن "postgresql"
-3. تأكد أنه يعمل (Running)
+1. Open "Services" (Windows Services)
+2. Look for "postgresql"
+3. Make sure it's running (Running)
 
-أو في PowerShell:
+Or in PowerShell:
 
 ```powershell
 Get-Service -Name postgresql*
 ```
 
-### 6. اختبار الاتصال:
+### 6. Test Connection:
 
-بعد تحديث `.env.local`، جرب:
+After updating `.env.local`, try:
 
 ```bash
 npm run db:push
 ```
 
-إذا نجح الأمر، سترى:
+If successful, you'll see:
 
 ```
 ✓ Pulling schema from database...
 ✓ Changes applied
 ```
 
-### 7. حلول إضافية إذا استمرت المشكلة:
+### 7. Additional Solutions if Problem Persists:
 
-#### أ. تأكد من المنفذ (Port):
+#### a. Check Port:
 
-المنفذ الافتراضي لـ PostgreSQL هو `5432`. تحقق من ذلك في إعدادات PostgreSQL.
+The default port for PostgreSQL is `5432`. Verify this in PostgreSQL settings.
 
-#### ب. إعادة تعيين كلمة مرور PostgreSQL:
+#### b. Reset PostgreSQL Password:
 
-في **psql** كمستخدم postgres:
+In **psql** as postgres user:
 
 ```sql
 ALTER USER postgres WITH PASSWORD 'newpassword';
 ```
 
-#### ج. التحقق من pg_hba.conf:
+#### c. Check pg_hba.conf:
 
-تأكد من أن ملف `pg_hba.conf` يسمح بالاتصال المحلي.
+Make sure the `pg_hba.conf` file allows local connections.
 
-المسار (على Windows):
+Path (on Windows):
 
 ```
 C:\Program Files\PostgreSQL\[VERSION]\data\pg_hba.conf
 ```
 
-تأكد من وجود هذا السطر:
+Make sure this line exists:
 
 ```
 host    all             all             127.0.0.1/32            md5
 ```
 
-### 8. نصيحة مهمة:
+### 8. Important Note:
 
-**لا تشارك ملف `.env.local` أبداً!**
+**Never share the `.env.local` file!**
 
-- يحتوي على معلومات حساسة (كلمات مرور)
-- هو مُضاف تلقائياً إلى `.gitignore`
+- Contains sensitive information (passwords)
+- Automatically added to `.gitignore`
 
-### 9. بعد الإصلاح:
+### 9. After Fix:
 
 ```bash
-# 1. طبق التغييرات على قاعدة البيانات
+# 1. Apply changes to database
 npm run db:push
 
-# 2. شغل التطبيق
+# 2. Run the app
 npm run dev
 
-# 3. اذهب إلى
+# 3. Go to
 # http://localhost:3000/sign-up
 ```
 
 ---
 
-## اختبار سريع:
+## Quick Test:
 
-لاختبار اتصال قاعدة البيانات مباشرة، يمكنك استخدام:
+To test database connection directly, you can use:
 
 ```bash
 npm run db:studio
 ```
 
-هذا سيفتح Drizzle Studio - إذا فتح بنجاح، فالاتصال يعمل! ✅
+This will open Drizzle Studio - if it opens successfully, the connection works! ✅

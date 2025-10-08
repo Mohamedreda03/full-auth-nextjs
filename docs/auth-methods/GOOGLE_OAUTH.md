@@ -1,71 +1,71 @@
 # 🔵 Google OAuth Authentication
 
-دليل كامل لإعداد تسجيل الدخول باستخدام Google.
+Complete guide for setting up Google sign-in.
 
 ---
 
-## ✅ الحالة
+## ✅ Status
 
-**مُفعّل افتراضياً** - يحتاج فقط Google credentials للعمل.
+**Enabled by default** - Only needs Google credentials to work.
 
 ---
 
-## 📋 المتطلبات
+## 📋 Requirements
 
-- ✅ قاعدة بيانات PostgreSQL
+- ✅ PostgreSQL database
 - 🔑 Google Cloud credentials
 
 ---
 
-## 🔧 الإعداد
+## 🔧 Setup
 
-### 1. الحصول على Google OAuth Credentials
+### 1. Get Google OAuth Credentials
 
-#### الخطوة 1: إنشاء Project في Google Cloud
+#### Step 1: Create Project in Google Cloud
 
-1. اذهب إلى [Google Cloud Console](https://console.cloud.google.com/)
-2. اضغط "Select a project" → "New Project"
-3. اسم المشروع: `your-app-name-auth`
-4. اضغط "Create"
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Click "Select a project" → "New Project"
+3. Project name: `your-app-name-auth`
+4. Click "Create"
 
-#### الخطوة 2: تفعيل OAuth Consent Screen
+#### Step 2: Enable OAuth Consent Screen
 
-1. من القائمة الجانبية: **APIs & Services** → **OAuth consent screen**
-2. اختر **External** (للتطبيقات العامة)
-3. اضغط "Create"
-4. املأ المعلومات:
+1. From sidebar: **APIs & Services** → **OAuth consent screen**
+2. Choose **External** (for public apps)
+3. Click "Create"
+4. Fill information:
    - App name: `Your App Name`
-   - User support email: بريدك
-   - Developer contact: بريدك
-5. اضغط "Save and Continue"
-6. Scopes: اضغط "Save and Continue" (استخدم defaults)
-7. Test users: أضف بريدك للاختبار
-8. اضغط "Save and Continue"
+   - User support email: your email
+   - Developer contact: your email
+5. Click "Save and Continue"
+6. Scopes: Click "Save and Continue" (use defaults)
+7. Test users: Add your email for testing
+8. Click "Save and Continue"
 
-#### الخطوة 3: إنشاء OAuth 2.0 Credentials
+#### Step 3: Create OAuth 2.0 Credentials
 
-1. من القائمة: **APIs & Services** → **Credentials**
-2. اضغط "Create Credentials" → "OAuth client ID"
+1. From menu: **APIs & Services** → **Credentials**
+2. Click "Create Credentials" → "OAuth client ID"
 3. Application type: **Web application**
 4. Name: `your-app-oauth-client`
 5. **Authorized redirect URIs**:
    - Development: `http://localhost:3000/api/auth/callback/google`
    - Production: `https://yourdomain.com/api/auth/callback/google`
-6. اضغط "Create"
-7. **انسخ**:
+6. Click "Create"
+7. **Copy**:
    - Client ID
    - Client Secret
 
-### 2. إضافة Environment Variables
+### 2. Add Environment Variables
 
-في `.env.local`:
+In `.env.local`:
 
 ```env
 GOOGLE_CLIENT_ID="123456789-xxxxxxxxxxxxxx.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET="GOCSPX-xxxxxxxxxxxx"
 ```
 
-### 3. Configuration في `src/lib/auth.ts`
+### 3. Configuration in `src/lib/auth.ts`
 
 ```typescript
 import { betterAuth } from "better-auth";
@@ -84,9 +84,9 @@ export const auth = betterAuth({
 
 ---
 
-## 🎨 الواجهة (UI)
+## 🎨 UI (User Interface)
 
-### في Sign-In Page
+### In Sign-In Page
 
 ```typescript
 import { authClient } from "@/lib/auth-client";
@@ -94,43 +94,43 @@ import { authClient } from "@/lib/auth-client";
 async function handleGoogleSignIn() {
   await authClient.signIn.social({
     provider: "google",
-    callbackURL: "/", // أين يذهب بعد تسجيل الدخول
+    callbackURL: "/", // Where to go after sign-in
   });
 }
 
-// في JSX
+// In JSX
 <Button onClick={handleGoogleSignIn}>
   <GoogleIcon /> Continue with Google
 </Button>;
 ```
 
-### في Sign-Up Page
+### In Sign-Up Page
 
-نفس الكود - Google OAuth يعمل للـ sign-in و sign-up معاً!
+Same code - Google OAuth works for both sign-in and sign-up!
 
 ---
 
-## 🔄 التدفق (Flow)
+## 🔄 Flow
 
 ```
-1. المستخدم يضغط "Continue with Google"
+1. User clicks "Continue with Google"
    ↓
-2. Better Auth يوجهه إلى Google
+2. Better Auth redirects to Google
    ↓
-3. المستخدم يختار حساب Google
+3. User selects Google account
    ↓
-4. Google يوجهه إلى callback URL
+4. Google redirects to callback URL
    ↓
 5. Better Auth:
-   - ينشئ حساب جديد (إذا لم يكن موجود)
-   - أو يسجل دخول (إذا كان موجود)
+   - Creates new account (if not exists)
+   - Or signs in (if exists)
    ↓
-6. المستخدم يُوجّه إلى callbackURL
+6. User redirected to callbackURL
 ```
 
 ---
 
-## 📁 الملفات المتأثرة
+## 📁 Affected Files
 
 ### Core Files
 
@@ -144,49 +144,49 @@ async function handleGoogleSignIn() {
 
 ---
 
-## 🧪 الاختبار
+## 🧪 Testing
 
 ### Development
 
 ```bash
-# 1. تأكد من credentials في .env.local
+# 1. Make sure credentials are in .env.local
 GOOGLE_CLIENT_ID="..."
 GOOGLE_CLIENT_SECRET="..."
 
-# 2. أعد تشغيل التطبيق
+# 2. Restart application
 npm run dev
 
-# 3. اذهب إلى
+# 3. Go to
 http://localhost:3000/sign-in
 
-# 4. اضغط "Continue with Google"
+# 4. Click "Continue with Google"
 
-# 5. اختر حساب Google
+# 5. Select Google account
 
-# 6. يجب أن تنجح العملية
+# 6. Should succeed
 ```
 
 ### Production
 
 ```bash
-# 1. أضف production redirect URI في Google Cloud:
+# 1. Add production redirect URI in Google Cloud:
 https://yourdomain.com/api/auth/callback/google
 
-# 2. أضف credentials في Vercel/production env
+# 2. Add credentials in Vercel/production env
 
-# 3. اختبر من production domain
+# 3. Test from production domain
 ```
 
 ---
 
-## ❌ التعطيل
+## ❌ Disable
 
-### الخطوة 1: حذف من `src/lib/auth.ts`
+### Step 1: Remove from `src/lib/auth.ts`
 
 ```typescript
 export const auth = betterAuth({
   // ... database config
-  // احذف هذا القسم
+  // Remove this section
   // socialProviders: {
   //   google: {
   //     clientId: process.env.GOOGLE_CLIENT_ID || "",
@@ -196,133 +196,133 @@ export const auth = betterAuth({
 });
 ```
 
-### الخطوة 2: حذف Google Buttons من UI
+### Step 2: Remove Google Buttons from UI
 
-احذف من `src/app/(auth)/sign-in/page.tsx` و `sign-up/page.tsx`:
+Remove from `src/app/(auth)/sign-in/page.tsx` and `sign-up/page.tsx`:
 
 ```typescript
-// احذف هذا
+// Remove this
 <Button onClick={handleGoogleSignIn}>
   <GoogleIcon /> Continue with Google
 </Button>
 
-// واحذف الـ handler
+// And remove the handler
 // async function handleGoogleSignIn() { ... }
 ```
 
-### الخطوة 3: حذف Environment Variables
+### Step 3: Remove Environment Variables
 
 ```env
-# احذف من .env.local
+# Remove from .env.local
 # GOOGLE_CLIENT_ID="..."
 # GOOGLE_CLIENT_SECRET="..."
 ```
 
 ---
 
-## 🐛 المشاكل الشائعة
+## 🐛 Common Issues
 
 ### 1. "redirect_uri_mismatch"
 
-**المشكلة**: Redirect URI غير مطابق
+**Problem**: Redirect URI doesn't match
 
-**الحل**:
+**Solution**:
 
 ```bash
-# تأكد من أن redirect URI في Google Cloud مطابق تماماً:
+# Make sure redirect URI in Google Cloud exactly matches:
 # Development:
 http://localhost:3000/api/auth/callback/google
 
 # Production:
 https://yourdomain.com/api/auth/callback/google
 
-# ⚠️ لا spaces، لا trailing slash
+# ⚠️ No spaces, no trailing slash
 ```
 
 ### 2. "access_denied"
 
-**المشكلة**: المستخدم رفض الصلاحيات أو لم يُضاف كـ test user
+**Problem**: User denied permissions or not added as test user
 
-**الحل**:
+**Solution**:
 
 ```bash
-# أضف المستخدم في Google Cloud:
+# Add user in Google Cloud:
 # OAuth consent screen → Test users → Add users
 ```
 
 ### 3. "invalid_client"
 
-**المشكلة**: Client ID أو Secret خاطئ
+**Problem**: Wrong Client ID or Secret
 
-**الحل**:
+**Solution**:
 
 ```bash
-# 1. تحقق من .env.local
-# 2. تأكد من نسخ credentials بشكل صحيح
-# 3. لا spaces في بداية أو نهاية القيمة
-# 4. أعد تشغيل npm run dev
+# 1. Check .env.local
+# 2. Make sure credentials copied correctly
+# 3. No spaces at beginning or end of value
+# 4. Restart npm run dev
 ```
 
-### 4. يعمل في Development ولا يعمل في Production
+### 4. Works in Development but not Production
 
-**الحل**:
+**Solution**:
 
 ```bash
-# 1. أضف production redirect URI في Google Cloud
-# 2. تأكد من environment variables في production
-# 3. تحقق من NEXT_PUBLIC_APP_URL
+# 1. Add production redirect URI in Google Cloud
+# 2. Make sure environment variables in production
+# 3. Check NEXT_PUBLIC_APP_URL
 ```
 
 ---
 
-## 🔒 الأمان
+## 🔒 Security
 
 ### Best Practices
 
-✅ **افعل**:
+✅ **Do**:
 
-- استخدم HTTPS في production
-- أضف فقط redirect URIs الصحيحة
-- لا تشارك Client Secret
-- استخدم different credentials لكل environment
+- Use HTTPS in production
+- Add only correct redirect URIs
+- Don't share Client Secret
+- Use different credentials for each environment
 
-❌ **لا تفعل**:
+❌ **Don't**:
 
-- لا تضف Client Secret في client-side code
-- لا تستخدم نفس credentials للـ dev و production
-- لا تضع `*` wildcards في redirect URIs
+- Don't put Client Secret in client-side code
+- Don't use same credentials for dev and production
+- Don't use `*` wildcards in redirect URIs
 
 ---
 
-## 📝 معلومات إضافية
+## 📝 Additional Information
 
 ### OAuth Scopes
 
-Better Auth يطلب فقط:
+Better Auth only requests:
 
-- `openid` - هوية المستخدم
-- `email` - البريد الإلكتروني
-- `profile` - الاسم والصورة
+- `openid` - User identity
+- `email` - Email address
+- `profile` - Name and picture
 
-### البيانات المُخزنة
+### Data Stored
 
-عند استخدام Google OAuth، Better Auth يُخزن:
+When using Google OAuth, Better Auth stores:
 
 - Email
 - Name
 - Profile picture URL
-- Google user ID (للربط)
+- Google user ID (for linking)
 
 ### Account Linking
 
-إذا سجل المستخدم بـ Email/Password ثم استخدم Google بنفس البريد:
+If user signs up with Email/Password then uses Google with same email:
 
-- ✅ Better Auth يربط الحسابات تلقائياً
-- ✅ يمكن تسجيل الدخول بأي طريقة
+- ✅ Better Auth links accounts automatically
+- ✅ Can sign in with either method
 
 ---
 
-## 📚 المزيد
+## 📚 More
 
 - [Google OAuth Documentation](https://developers.google.com/identity/protocols/oauth2)
 - [Better Auth Social Providers](https://www.better-auth.com/docs/authentication/social)
@@ -330,4 +330,4 @@ Better Auth يطلب فقط:
 
 ---
 
-**Google OAuth أسرع طريقة لتحسين user onboarding! 🚀**
+**Google OAuth is the fastest way to improve user onboarding! 🚀**

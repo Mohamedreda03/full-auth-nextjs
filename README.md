@@ -1,6 +1,6 @@
 # Next.js Authentication System with Better Auth
 
-نظام مصادقة كامل ومرن مبني باستخدام Next.js 15, Better Auth, Drizzle ORM, و shadcn/ui.
+A complete and flexible authentication system built with Next.js 15, Better Auth, Drizzle ORM, and shadcn/ui.
 
 ---
 
@@ -21,15 +21,15 @@ npm run db:push
 npm run dev
 ```
 
-🎯 **للتفاصيل**: اقرأ [Quick Start Guide](./docs/QUICK_START.md)
+🎯 **For details**: Read [Quick Start Guide](./docs/QUICK_START.md)
 
 ---
 
-## ✨ Features - الميزات
+## ✨ Features
 
-### 🔐 طرق المصادقة
+### 🔐 Authentication Methods
 
-| الطريقة                | الحالة          | يحتاج              | الدليل                                                               |
+| Method                 | Status          | Requires           | Guide                                                                |
 | ---------------------- | --------------- | ------------------ | -------------------------------------------------------------------- |
 | **Email & Password**   | ✅ Works        | Database           | [📖 Guide](./docs/auth-methods/EMAIL_PASSWORD.md)                    |
 | **Google OAuth**       | ✅ Works        | Google Credentials | [📖 Guide](./docs/auth-methods/GOOGLE_OAUTH.md)                      |
@@ -51,17 +51,17 @@ npm run dev
 
 ---
 
-## 📚 Documentation - التوثيق
+## 📚 Documentation
 
-### 🎯 ابدأ هنا
+### 🎯 Start Here
 
-| الدليل                                                | متى تقرأه              |
-| ----------------------------------------------------- | ---------------------- |
-| [📘 Quick Start](./docs/QUICK_START.md)               | للبدء السريع (5 دقائق) |
-| [🧩 Modular Setup](./docs/guides/MODULAR_SETUP.md) ⭐ | لتخصيص طرق المصادقة    |
-| [📖 Full Documentation](./docs/README.md)             | للتوثيق الكامل         |
+| Guide                                                 | When to read it             |
+| ----------------------------------------------------- | --------------------------- |
+| [📘 Quick Start](./docs/QUICK_START.md)               | For quick start (5 minutes) |
+| [🧩 Modular Setup](./docs/guides/MODULAR_SETUP.md) ⭐ | To customize auth methods   |
+| [📖 Full Documentation](./docs/README.md)             | For complete documentation  |
 
-### 🔧 الإعداد
+### 🔧 Setup
 
 - [Database Setup](./docs/setup/DATABASE_SETUP.md)
 - [Environment Variables](./docs/setup/ENVIRONMENT_VARIABLES.md)
@@ -75,6 +75,7 @@ npm run dev
 - [Magic Link](./docs/auth-methods/MAGIC_LINK.md)
 - [Email OTP](./docs/auth-methods/EMAIL_OTP.md)
 - [Password Reset](./docs/auth-methods/PASSWORD_RESET.md)
+- [Admin Roles](./docs/auth-methods/ADMIN_ROLES.md)
 
 ### 🐛 Troubleshooting
 
@@ -138,14 +139,14 @@ docs/                        # 📚 Complete documentation
 
 ## 🔑 Environment Variables
 
-### الأساسية (Required)
+### Required
 
 ```env
 DATABASE_URL="postgresql://user:password@localhost:5432/database"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ```
 
-### الاختيارية (Optional)
+### Optional
 
 ```env
 # Google OAuth
@@ -157,7 +158,7 @@ RESEND_API_KEY="re_your_api_key"
 EMAIL_FROM="onboarding@resend.dev"
 ```
 
-📖 **الدليل الكامل**: [Environment Variables Guide](./docs/setup/ENVIRONMENT_VARIABLES.md)
+📖 **Complete guide**: [Environment Variables Guide](./docs/setup/ENVIRONMENT_VARIABLES.md)
 
 ---
 
@@ -181,42 +182,42 @@ npm run db:studio    # Open Drizzle Studio
 
 ---
 
-## 🎯 Use Cases - حالات الاستخدام
+## 🎯 Use Cases
 
-### السيناريو 1: Email/Password فقط
+### Scenario 1: Email/Password Only
 
 ```bash
-# مثالي للـ: SaaS applications, admin panels
+# Perfect for: SaaS applications, admin panels
 ✅ Email & Password
-❌ حذف Google OAuth
-❌ حذف Magic Link
-❌ حذف OTP
+❌ Remove Google OAuth
+❌ Remove Magic Link
+❌ Remove OTP
 ```
 
-📖 **كيف؟** اقرأ [Modular Setup Guide](./docs/guides/MODULAR_SETUP.md#السيناريو-1-emailpassword-فقط)
+📖 **How?** Read [Modular Setup Guide](./docs/guides/MODULAR_SETUP.md#scenario-1-emailpassword-only)
 
-### السيناريو 2: Passwordless فقط
+### Scenario 2: Passwordless Only
 
 ```bash
-# مثالي للـ: consumer apps, mobile-first apps
-❌ حذف Email & Password
+# Perfect for: consumer apps, mobile-first apps
+❌ Remove Email & Password
 ✅ Magic Link
 ✅ Email OTP
 ```
 
-📖 **كيف؟** اقرأ [Modular Setup Guide](./docs/guides/MODULAR_SETUP.md#السيناريو-4-passwordless-فقط)
+📖 **How?** Read [Modular Setup Guide](./docs/guides/MODULAR_SETUP.md#scenario-4-passwordless-only)
 
-### السيناريو 3: كل شيء
+### Scenario 3: Everything
 
 ```bash
-# مثالي للـ: enterprise apps, flexible platforms
+# Perfect for: enterprise apps, flexible platforms
 ✅ Email & Password
 ✅ Google OAuth
 ✅ Magic Link
 ✅ Email OTP
 ```
 
-**لا حاجة لتغيير شيء** - كل شيء مُفعّل بالفعل!
+**No changes needed** - everything is already enabled!
 
 ---
 
@@ -232,61 +233,61 @@ git push origin main
 # https://vercel.com/new
 
 # 3. Add Environment Variables
-# في Vercel dashboard → Settings → Environment Variables
+# In Vercel dashboard → Settings → Environment Variables
 
 # 4. Deploy!
 ```
 
-### Environment Variables في Production
+### Environment Variables in Production
 
 ```env
 DATABASE_URL="postgresql://..."  # Production DB
 NEXT_PUBLIC_APP_URL="https://yourdomain.com"
-BETTER_AUTH_SECRET="your-secret-key"  # مطلوب!
+BETTER_AUTH_SECRET="your-secret-key"  # Required!
 RESEND_API_KEY="re_..."
 GOOGLE_CLIENT_ID="..."
 GOOGLE_CLIENT_SECRET="..."
 ```
 
-⚠️ **مهم**: غيّر redirect URIs في Google Cloud Console للـ production domain!
+⚠️ **Important**: Update redirect URIs in Google Cloud Console for production domain!
 
 ---
 
-## 🧩 Modular Design - التصميم المرن
+## 🧩 Modular Design
 
-هذا المشروع مُصمم ليكون **مرن تماماً**:
+This project is designed to be **completely flexible**:
 
-### ✅ يمكنك:
+### ✅ You can:
 
-- تفعيل/تعطيل أي طريقة مصادقة
-- استخدام طريقة واحدة أو جميعها
-- إضافة طرق جديدة بسهولة
-- تخصيص UI لكل طريقة
+- Enable/disable any authentication method
+- Use one method or all of them
+- Add new methods easily
+- Customize UI for each method
 
-### 📖 الدليل:
+### 📖 Guide:
 
-[Modular Setup Guide](./docs/guides/MODULAR_SETUP.md) - يشرح بالتفصيل:
+[Modular Setup Guide](./docs/guides/MODULAR_SETUP.md) - Explains in detail:
 
-- ما تبقيه
-- ما تحذفه
-- أي ملفات تُعدّل
-- كيف تختبر بعد التعديل
+- What to keep
+- What to remove
+- Which files to modify
+- How to test after changes
 
 ---
 
 ## 🤝 Contributing
 
-المساهمات مرحب بها! يرجى:
+Contributions are welcome! Please:
 
-1. قراءة التوثيق أولاً
-2. إنشاء issue للمناقشة
+1. Read the documentation first
+2. Create an issue for discussion
 3. Fork → Edit → Pull Request
 
 ---
 
 ## 📄 License
 
-MIT License - استخدمه بحرية!
+MIT License - Use it freely!
 
 ---
 

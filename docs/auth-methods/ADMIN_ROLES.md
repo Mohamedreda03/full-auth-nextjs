@@ -1,45 +1,45 @@
 # 👑 Admin Roles & Permissions
 
-دليل كامل لنظام الصلاحيات والأدوار في التطبيق باستخدام Better Auth Admin Plugin.
+Complete guide for the role and permission system in the application using Better Auth Admin Plugin.
 
 ---
 
-## ✅ الحالة
+## ✅ Status
 
-**مُفعّل** - نظام الصلاحيات جاهز للاستخدام.
-
----
-
-## 📋 المتطلبات
-
-- ✅ قاعدة بيانات PostgreSQL
-- ✅ Better Auth مُفعّل
-- ✅ Admin Plugin مُفعّل
+**Enabled** - Role system is ready to use.
 
 ---
 
-## 🎯 الأدوار المتاحة
+## 📋 Requirements
 
-### 1. **User** (المستخدم العادي)
-
-- الدور الافتراضي لجميع المستخدمين الجدد
-- صلاحيات محدودة
-- لا يمكنه إدارة مستخدمين آخرين
-
-### 2. **Admin** (المدير)
-
-- صلاحيات كاملة
-- يمكنه إدارة جميع المستخدمين
-- يمكنه تغيير أدوار المستخدمين
-- يمكنه حظر/إلغاء حظر المستخدمين
+- ✅ PostgreSQL database
+- ✅ Better Auth enabled
+- ✅ Admin Plugin enabled
 
 ---
 
-## 🔧 الإعداد الحالي
+## 🎯 Available Roles
+
+### 1. **User** (Regular User)
+
+- Default role for all new users
+- Limited permissions
+- Cannot manage other users
+
+### 2. **Admin** (Administrator)
+
+- Full permissions
+- Can manage all users
+- Can change user roles
+- Can ban/unban users
+
+---
+
+## 🔧 Current Setup
 
 ### 1. Database Schema
 
-في `src/lib/db/schema.ts`:
+In `src/lib/db/schema.ts`:
 
 ```typescript
 export const user = pgTable("user", {
@@ -61,7 +61,7 @@ export const user = pgTable("user", {
 
 ### 2. Better Auth Config
 
-في `src/lib/auth.ts`:
+In `src/lib/auth.ts`:
 
 ```typescript
 import { admin } from "better-auth/plugins";
@@ -78,7 +78,7 @@ export const auth = betterAuth({
 
 ### 3. Auth Client
 
-في `src/lib/auth-client.ts`:
+In `src/lib/auth-client.ts`:
 
 ```typescript
 import { adminClient } from "better-auth/client/plugins";
@@ -105,9 +105,9 @@ export const useAdmin = () => {
 
 ---
 
-## 📚 كيفية الاستخدام
+## 📚 How to Use
 
-### 1. التحقق من صلاحيات المستخدم
+### 1. Check User Permissions
 
 ```typescript
 "use client";
@@ -130,7 +130,7 @@ export function MyComponent() {
 }
 ```
 
-### 2. تغيير دور المستخدم (Admin فقط)
+### 2. Change User Role (Admin Only)
 
 ```typescript
 "use client";
@@ -158,7 +158,7 @@ export function UserManagement() {
 }
 ```
 
-### 3. حظر مستخدم (Admin فقط)
+### 3. Ban User (Admin Only)
 
 ```typescript
 import { useAdmin } from "@/lib/auth-client";
@@ -185,7 +185,7 @@ export function BanUser() {
 }
 ```
 
-### 4. إلغاء حظر مستخدم
+### 4. Unban User
 
 ```typescript
 import { useAdmin } from "@/lib/auth-client";
@@ -210,7 +210,7 @@ export function UnbanUser() {
 }
 ```
 
-### 5. حذف مستخدم (Admin فقط)
+### 5. Delete User (Admin Only)
 
 ```typescript
 import { useAdmin } from "@/lib/auth-client";
@@ -235,7 +235,7 @@ export function DeleteUser() {
 }
 ```
 
-### 6. عرض جميع المستخدمين (Admin فقط)
+### 6. List All Users (Admin Only)
 
 ```typescript
 import { useAdmin } from "@/lib/auth-client";
@@ -274,9 +274,9 @@ export function UsersList() {
 
 ---
 
-## 🔒 حماية الصفحات (Server-Side)
+## 🔒 Page Protection (Server-Side)
 
-### 1. حماية صفحة كاملة
+### 1. Protect Entire Page
 
 ```typescript
 // src/app/admin/page.tsx
@@ -302,7 +302,7 @@ export default async function AdminPage() {
 }
 ```
 
-### 2. Middleware للحماية
+### 2. Middleware for Protection
 
 ```typescript
 // src/middleware.ts
@@ -338,20 +338,20 @@ export const config = {
 
 ---
 
-## ⚙️ إضافة/إزالة الصلاحيات
+## ⚙️ Adding/Removing Permissions
 
-### ✅ إضافة دور Admin لمستخدم موجود
+### ✅ Add Admin Role to Existing User
 
-#### الطريقة 1: عبر Database
+#### Method 1: Via Database
 
 ```sql
--- في PostgreSQL
+-- In PostgreSQL
 UPDATE "user"
 SET role = 'admin'
 WHERE email = 'admin@example.com';
 ```
 
-#### الطريقة 2: عبر API (يحتاج admin آخر)
+#### Method 2: Via API (needs another admin)
 
 ```typescript
 await adminActions.setRole({
@@ -360,14 +360,14 @@ await adminActions.setRole({
 });
 ```
 
-#### الطريقة 3: عبر Drizzle Studio
+#### Method 3: Via Drizzle Studio
 
 ```bash
 npm run db:studio
-# افتح المتصفح وعدّل role مباشرة
+# Open browser and edit role directly
 ```
 
-### ❌ إزالة دور Admin
+### ❌ Remove Admin Role
 
 ```typescript
 await adminActions.setRole({
@@ -376,7 +376,7 @@ await adminActions.setRole({
 });
 ```
 
-أو في Database:
+Or in Database:
 
 ```sql
 UPDATE "user"
@@ -386,7 +386,7 @@ WHERE id = 'user-id';
 
 ---
 
-## 🎨 أمثلة UI Components
+## 🎨 UI Component Examples
 
 ### Admin Badge Component
 
@@ -430,51 +430,51 @@ export function AdminSection({ children }: { children: React.ReactNode }) {
 
 ---
 
-## 🐛 المشاكل الشائعة
+## 🐛 Common Issues
 
-### 1. "Permission denied" عند استخدام admin functions
+### 1. "Permission denied" when using admin functions
 
-**المشكلة**: المستخدم ليس admin
+**Problem**: User is not admin
 
-**الحل**:
+**Solution**:
 
 ```bash
-# تحقق من role في database
+# Check role in database
 npm run db:studio
 
-# أو عدّل مباشرة
+# Or edit directly
 UPDATE "user" SET role = 'admin' WHERE email = 'your@email.com';
 ```
 
-### 2. Database migration بعد إضافة role field
+### 2. Database migration after adding role field
 
-**الحل**:
+**Solution**:
 
 ```bash
-# أعد push الـ schema
+# Re-push schema
 npm run db:push
 
-# أو generate migration
+# Or generate migration
 npm run db:generate
 npm run db:migrate
 ```
 
-### 3. Role لا يظهر في session
+### 3. Role not showing in session
 
-**الحل**:
+**Solution**:
 
 ```bash
-# تأكد من:
-# 1. Database schema محدث
-# 2. أعد تسجيل الدخول
-# 3. تحقق من auth config
+# Make sure:
+# 1. Database schema is updated
+# 2. Re-sign in
+# 3. Check auth config
 ```
 
 ---
 
 ## 📊 Permissions Matrix
 
-| العملية              | User | Admin |
+| Operation            | User | Admin |
 | -------------------- | ---- | ----- |
 | **View own profile** | ✅   | ✅    |
 | **Edit own profile** | ✅   | ✅    |
@@ -487,28 +487,28 @@ npm run db:migrate
 
 ---
 
-## 🔒 الأمان (Security Best Practices)
+## 🔒 Security (Security Best Practices)
 
-### ✅ افعل:
+### ✅ Do:
 
-- ✅ دائماً تحقق من الصلاحيات في Server-Side
-- ✅ استخدم Middleware لحماية المسارات
-- ✅ سجّل جميع admin actions
-- ✅ استخدم minimum privilege principle
-- ✅ راجع admin users بانتظام
+- ✅ Always check permissions on Server-Side
+- ✅ Use Middleware to protect routes
+- ✅ Log all admin actions
+- ✅ Use minimum privilege principle
+- ✅ Review admin users regularly
 
-### ❌ لا تفعل:
+### ❌ Don't:
 
-- ❌ لا تعتمد فقط على Client-Side checks
-- ❌ لا تعطي admin role لأي أحد
-- ❌ لا تترك admin routes بدون حماية
-- ❌ لا تنسَ logging admin actions
+- ❌ Don't rely only on Client-Side checks
+- ❌ Don't give admin role to anyone
+- ❌ Don't leave admin routes unprotected
+- ❌ Don't forget logging admin actions
 
 ---
 
 ## 🚀 Advanced: Custom Roles
 
-إذا أردت إضافة أدوار مخصصة (مثل: moderator, editor):
+If you want to add custom roles (like: moderator, editor):
 
 ### 1. Update Schema
 
@@ -569,7 +569,7 @@ export const auth = betterAuth({
 
 ---
 
-## 📚 المزيد
+## 📚 More
 
 - [Better Auth Admin Plugin Docs](https://www.better-auth.com/docs/plugins/admin)
 - [Better Auth Access Control](https://www.better-auth.com/docs/plugins/access)
@@ -577,4 +577,4 @@ export const auth = betterAuth({
 
 ---
 
-**إدارة صلاحيات قوية وآمنة! 👑**
+**Powerful and secure permission management! 👑**

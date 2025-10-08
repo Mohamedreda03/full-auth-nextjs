@@ -1,34 +1,34 @@
 # 🔄 Password Reset
 
-دليل كامل لميزة إعادة تعيين كلمة المرور.
+Complete guide for password reset functionality.
 
 ---
 
-## ✅ الحالة
+## ✅ Status
 
-**مُفعّل** - يحتاج Resend API للعمل.
-
----
-
-## 📋 المتطلبات
-
-- ✅ قاعدة بيانات PostgreSQL
-- ✅ **Email & Password مُفعّل** (يعتمد عليه)
-- 📧 **Resend API key** (مطلوب!)
+**Enabled** - Needs Resend API to work.
 
 ---
 
-## 🔧 الإعداد
+## 📋 Requirements
+
+- ✅ PostgreSQL database
+- ✅ **Email & Password enabled** (depends on it)
+- 📧 **Resend API key** (required!)
+
+---
+
+## 🔧 Setup
 
 ### 1. Resend API
 
 ```env
-# في .env.local
+# In .env.local
 RESEND_API_KEY="re_your_api_key_here"
 EMAIL_FROM="onboarding@resend.dev"
 ```
 
-### 2. Configuration في `src/lib/auth.ts`
+### 2. Configuration in `src/lib/auth.ts`
 
 ```typescript
 import { betterAuth } from "better-auth";
@@ -51,7 +51,7 @@ export const auth = betterAuth({
 });
 ```
 
-### 3. Client Methods في `src/lib/auth-client.ts`
+### 3. Client Methods in `src/lib/auth-client.ts`
 
 ```typescript
 export const {
@@ -59,18 +59,18 @@ export const {
   signUp,
   signOut,
   useSession,
-  forgetPassword, // لطلب reset
-  resetPassword, // لتعيين كلمة مرور جديدة
+  forgetPassword, // to request reset
+  resetPassword, // to set new password
 } = authClient;
 ```
 
 ---
 
-## 🎨 الواجهات (UI)
+## 🎨 UI (User Interface)
 
 ### 1. Forgot Password Page
 
-**الملف**: `src/app/(auth)/forgot-password/page.tsx`
+**File**: `src/app/(auth)/forgot-password/page.tsx`
 
 ```typescript
 import { authClient } from "@/lib/auth-client";
@@ -93,7 +93,7 @@ async function onSubmit(data: { email: string }) {
 
 ### 2. Reset Password Page
 
-**الملف**: `src/app/(auth)/reset-password/page.tsx`
+**File**: `src/app/(auth)/reset-password/page.tsx`
 
 ```typescript
 import { authClient } from "@/lib/auth-client";
@@ -120,7 +120,7 @@ async function onSubmit(data: { password: string }) {
 }
 ```
 
-### 3. Link في Sign-In Page
+### 3. Link in Sign-In Page
 
 ```typescript
 <Link href="/forgot-password">Forgot password?</Link>
@@ -128,33 +128,33 @@ async function onSubmit(data: { password: string }) {
 
 ---
 
-## 🔄 التدفق (Flow)
+## 🔄 Flow
 
 ```
-1. المستخدم يضغط "Forgot password?"
+1. User clicks "Forgot password?"
    ↓
-2. يُدخل بريده في Forgot Password page
+2. Enters email in Forgot Password page
    ↓
-3. Better Auth يُولّد reset token
+3. Better Auth generates reset token
    ↓
-4. Email يُرسل مع Reset link
+4. Email sent with Reset link
    ↓
-5. المستخدم يفتح بريده
+5. User opens email
    ↓
-6. يضغط Reset Password link
+6. Clicks Reset Password link
    ↓
-7. يُوجّه إلى Reset Password page مع token
+7. Redirected to Reset Password page with token
    ↓
-8. يُدخل كلمة مرور جديدة
+8. Enters new password
    ↓
-9. Better Auth يُحدث كلمة المرور
+9. Better Auth updates password
    ↓
-10. Redirect إلى Sign-In
+10. Redirect to Sign-In
 ```
 
 ---
 
-## 📁 الملفات المطلوبة
+## 📁 Required Files
 
 ### Core Files
 
@@ -171,67 +171,67 @@ async function onSubmit(data: { password: string }) {
 
 ---
 
-## 🧪 الاختبار
+## 🧪 Testing
 
 ```bash
-# 1. تأكد من Resend API في .env.local
+# 1. Make sure Resend API in .env.local
 RESEND_API_KEY="re_..."
 EMAIL_FROM="onboarding@resend.dev"
 
-# 2. تأكد من Email & Password مُفعّل
+# 2. Make sure Email & Password is enabled
 
-# 3. أعد تشغيل التطبيق
+# 3. Restart application
 npm run dev
 
-# 4. اذهب إلى sign-in
+# 4. Go to sign-in
 http://localhost:3000/sign-in
 
-# 5. اضغط "Forgot password?"
+# 5. Click "Forgot password?"
 
-# 6. أدخل بريدك
+# 6. Enter your email
 
-# 7. تحقق من بريدك
+# 7. Check your email
 
-# 8. اضغط "Reset Password" link
+# 8. Click "Reset Password" link
 
-# 9. أدخل كلمة مرور جديدة
+# 9. Enter new password
 
-# 10. يجب أن تنجح العملية
+# 10. Should succeed
 ```
 
 ---
 
-## ❌ التعطيل
+## ❌ Disable
 
-⚠️ **تحذير**: تعطيل Password Reset **غير موصى به** - هذه ميزة أساسية للـ UX!
+⚠️ **Warning**: Disabling Password Reset is **not recommended** - this is an essential UX feature!
 
-### إذا أردت تعطيله:
+### If you want to disable it:
 
-### 1. حذف من `src/lib/auth.ts`
+### 1. Remove from `src/lib/auth.ts`
 
 ```typescript
 emailAndPassword: {
   enabled: true,
   requireEmailVerification: true,
-  // احذف sendResetPassword
+  // Remove sendResetPassword
   // sendResetPassword: async ({ user, url }) => {
   //   // ...
   // },
 },
 ```
 
-### 2. حذف الصفحات
+### 2. Remove Pages
 
 ```bash
 rm src/app/(auth)/forgot-password/page.tsx
 rm src/app/(auth)/reset-password/page.tsx
 ```
 
-### 3. حذف Link من Sign-In
+### 3. Remove Link from Sign-In
 
-احذف "Forgot password?" link من `src/app/(auth)/sign-in/page.tsx`
+Remove "Forgot password?" link from `src/app/(auth)/sign-in/page.tsx`
 
-### 4. حذف Methods من `src/lib/auth-client.ts`
+### 4. Remove Methods from `src/lib/auth-client.ts`
 
 ```typescript
 export const {
@@ -239,66 +239,66 @@ export const {
   signUp,
   signOut,
   useSession,
-  // احذف هذه
+  // Remove these
   // forgetPassword,
   // resetPassword,
 } = authClient;
 ```
 
-### 5. حذف Template
+### 5. Remove Template
 
-احذف `passwordResetTemplate` من `src/lib/email-templates.ts`
+Remove `passwordResetTemplate` from `src/lib/email-templates.ts`
 
 ---
 
-## 🐛 المشاكل الشائعة
+## 🐛 Common Issues
 
-### 1. Email لا يصل
+### 1. Email not arriving
 
 ```bash
-# تحقق من:
-✅ RESEND_API_KEY صحيح
+# Check:
+✅ RESEND_API_KEY is correct
 ✅ EMAIL_FROM verified
-✅ البريد في Spam folder
+✅ Email in Spam folder
 ✅ terminal logs
-✅ المستخدم موجود في DB
+✅ User exists in DB
 ```
 
 ### 2. "Invalid or expired token"
 
 ```bash
-# الأسباب:
-- الرابط مُستخدم مسبقاً
-- الرابط expired (1 ساعة افتراضياً)
-- اطلب reset link جديد
+# Reasons:
+- Link already used
+- Link expired (1 hour by default)
+- Request new reset link
 ```
 
 ### 3. "User not found"
 
 ```bash
-# الحل:
-- تحقق من أن البريد مسجل في DB
-- تأكد من كتابة البريد بشكل صحيح
+# Solution:
+- Check email is registered in DB
+- Make sure email is typed correctly
 ```
 
 ---
 
-## ⚙️ التخصيص
+## ⚙️ Customization
 
-### Custom Redirect بعد Reset
+### Custom Redirect after Reset
 
 ```typescript
-// في forgot-password page
+// In forgot-password page
 await authClient.forgetPassword({
   email: data.email,
-  redirectTo: "/custom-reset-page", // بدل /reset-password
+  redirectTo: "/custom-reset-page", // instead of /reset-password
 });
 ```
 
 ### Custom Success Redirect
 
 ```typescript
-// في reset-password page
+// In reset-password page
 if (result.success) {
   router.push("/sign-in?reset=success");
 }
@@ -306,12 +306,12 @@ if (result.success) {
 
 ### Custom Email Template
 
-عدّل `passwordResetTemplate` في `src/lib/email-templates.ts`
+Modify `passwordResetTemplate` in `src/lib/email-templates.ts`
 
 ### Password Validation
 
 ```typescript
-// في reset-password page
+// In reset-password page
 const resetSchema = z
   .object({
     password: z
@@ -329,43 +329,43 @@ const resetSchema = z
 
 ---
 
-## 🔒 الأمان
+## 🔒 Security
 
 ### Token Security
 
-Better Auth يستخدم:
+Better Auth uses:
 
 - ✅ Cryptographically secure tokens
-- ✅ One-time use (يُحذف بعد الاستخدام)
-- ✅ Expiry time (1 ساعة افتراضياً)
+- ✅ One-time use (deleted after use)
+- ✅ Expiry time (1 hour by default)
 - ✅ Email verification
 
 ### Best Practices
 
-✅ **افعل**:
+✅ **Do**:
 
-- استخدم strong password requirements
-- أرسل email confirmation بعد reset
-- سجّل password reset events
+- Use strong password requirements
+- Send email confirmation after reset
+- Log password reset events
 - Rate limit reset requests
 
-❌ **لا تفعل**:
+❌ **Don't**:
 
-- لا تكشف ما إذا كان البريد موجود (security risk)
-- لا تجعل token expiry طويل جداً
-- لا تسمح بـ unlimited reset requests
+- Don't reveal if email exists (security risk)
+- Don't make token expiry too long
+- Don't allow unlimited reset requests
 
 ---
 
 ## 📊 UX Tips
 
-### في Forgot Password Page
+### In Forgot Password Page
 
 ```typescript
-// بدل "Email not found"، استخدم:
+// Instead of "Email not found", use:
 "If this email is registered, you'll receive a reset link.";
 
-// هذا يحمي الخصوصية (لا يكشف ما إذا كان البريد موجود)
+// This protects privacy (doesn't reveal if email exists)
 ```
 
 ### Success Messages
@@ -390,7 +390,7 @@ Better Auth يستخدم:
 
 ---
 
-## 📚 المزيد
+## 📚 More
 
 - [Email & Password Guide](./EMAIL_PASSWORD.md)
 - [Email Service Setup](../guides/EMAIL_SERVICE.md)
@@ -399,4 +399,4 @@ Better Auth يستخدم:
 
 ---
 
-**Password Reset هو must-have لأي تطبيق! 🔒**
+**Password Reset is a must-have for any app! 🔒**

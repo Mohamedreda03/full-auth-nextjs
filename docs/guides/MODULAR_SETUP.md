@@ -1,13 +1,13 @@
-# 🧩 Modular Authentication Setup - الإعداد المرن
+# 🧩 Modular Authentication Setup
 
-هذا الدليل يشرح **كيفية تفعيل أو تعطيل** كل طريقة مصادقة حسب احتياجاتك.
+This guide explains **how to enable or disable** each authentication method according to your needs.
 
 ---
 
-## 📋 جدول المحتويات
+## 📋 Table of Contents
 
-- [الاختيارات المتاحة](#الاختيارات-المتاحة)
-- [السيناريوهات الشائعة](#السيناريوهات-الشائعة)
+- [Available Options](#available-options)
+- [Common Scenarios](#common-scenarios)
 - [Email & Password](#1-email--password)
 - [Google OAuth](#2-google-oauth)
 - [Magic Link](#3-magic-link)
@@ -17,46 +17,46 @@
 
 ---
 
-## 🎯 الاختيارات المتاحة
+## 🎯 Available Options
 
-| الطريقة                | يمكن تعطيلها؟ | التبعيات          | الملفات المتأثرة                            |
-| ---------------------- | ------------- | ----------------- | ------------------------------------------- |
-| **Email & Password**   | ✅ نعم        | Database          | `auth.ts`, `sign-in/up pages`               |
-| **Google OAuth**       | ✅ نعم        | Database          | `auth.ts`, `sign-in/up pages`               |
-| **Magic Link**         | ✅ نعم        | Database + Resend | `auth.ts`, `auth-client.ts`, `sign-in page` |
-| **Email OTP**          | ✅ نعم        | Database + Resend | `auth.ts`, `auth-client.ts`, `sign-in page` |
-| **Password Reset**     | ⚠️ يعتمد\*    | Database + Resend | `auth.ts`, `forgot/reset pages`             |
-| **Email Verification** | ⚠️ يعتمد\*    | Database + Resend | `auth.ts`                                   |
+| Method                 | Can Disable? | Dependencies      | Affected Files                              |
+| ---------------------- | ------------ | ----------------- | ------------------------------------------- |
+| **Email & Password**   | ✅ Yes       | Database          | `auth.ts`, `sign-in/up pages`               |
+| **Google OAuth**       | ✅ Yes       | Database          | `auth.ts`, `sign-in/up pages`               |
+| **Magic Link**         | ✅ Yes       | Database + Resend | `auth.ts`, `auth-client.ts`, `sign-in page` |
+| **Email OTP**          | ✅ Yes       | Database + Resend | `auth.ts`, `auth-client.ts`, `sign-in page` |
+| **Password Reset**     | ⚠️ Depends\* | Database + Resend | `auth.ts`, `forgot/reset pages`             |
+| **Email Verification** | ⚠️ Depends\* | Database + Resend | `auth.ts`                                   |
 
-> **\*** Password Reset يعتمد على Email & Password. Email Verification اختياري ولكن موصى به.
+> **\*** Password Reset depends on Email & Password. Email Verification is optional but recommended.
 
 ---
 
-## 🎬 السيناريوهات الشائعة
+## 🎬 Common Scenarios
 
-### السيناريو 1: Email/Password فقط
+### Scenario 1: Email/Password Only
 
 ```
 ✅ Email & Password
 ❌ Google OAuth
 ❌ Magic Link
 ❌ Email OTP
-⚠️ Password Reset (موصى به)
-⚠️ Email Verification (موصى به)
+⚠️ Password Reset (recommended)
+⚠️ Email Verification (recommended)
 ```
 
-### السيناريو 2: Email/Password + Google
+### Scenario 2: Email/Password + Google
 
 ```
 ✅ Email & Password
 ✅ Google OAuth
 ❌ Magic Link
 ❌ Email OTP
-⚠️ Password Reset (موصى به)
-⚠️ Email Verification (موصى به)
+⚠️ Password Reset (recommended)
+⚠️ Email Verification (recommended)
 ```
 
-### السيناريو 3: جميع الطرق
+### Scenario 3: All Methods
 
 ```
 ✅ Email & Password
@@ -67,7 +67,7 @@
 ✅ Email Verification
 ```
 
-### السيناريو 4: Passwordless فقط
+### Scenario 4: Passwordless Only
 
 ```
 ❌ Email & Password
@@ -82,18 +82,18 @@
 
 ## 1. Email & Password
 
-### ✅ للتفعيل (مُفعّل افتراضياً)
+### ✅ To Enable (enabled by default)
 
-**لا يوجد تغيير مطلوب** - هذه الطريقة مُفعّلة بالفعل.
+**No changes needed** - this method is already enabled.
 
-### ❌ للتعطيل
+### ❌ To Disable
 
-#### الخطوة 1: تعطيل في `src/lib/auth.ts`
+#### Step 1: Disable in `src/lib/auth.ts`
 
 ```typescript
 export const auth = betterAuth({
   // ... database config
-  // احذف أو عطّل هذا القسم
+  // Remove or disable this section
   // emailAndPassword: {
   //   enabled: true,
   //   requireEmailVerification: true,
@@ -105,22 +105,22 @@ export const auth = betterAuth({
 });
 ```
 
-#### الخطوة 2: حذف UI من `src/app/(auth)/sign-in/page.tsx`
+#### Step 2: Remove UI from `src/app/(auth)/sign-in/page.tsx`
 
-احذف القسم التالي:
+Remove the following section:
 
 ```typescript
-// احذف هذا
+// Remove this
 {
   authMethod === "password" && <Form {...form}>{/* ... password form */}</Form>;
 }
 ```
 
-#### الخطوة 3: حذف UI من `src/app/(auth)/sign-up/page.tsx`
+#### Step 3: Remove UI from `src/app/(auth)/sign-up/page.tsx`
 
-احذف form الـ password بالكامل.
+Remove the entire password form.
 
-#### الخطوة 4: حذف الصفحات التالية (إذا لم تستخدم Password Reset)
+#### Step 4: Remove the following pages (if not using Password Reset)
 
 ```bash
 rm src/app/(auth)/forgot-password/page.tsx
@@ -131,31 +131,31 @@ rm src/app/(auth)/reset-password/page.tsx
 
 ## 2. Google OAuth
 
-### ✅ للتفعيل (مُفعّل افتراضياً)
+### ✅ To Enable (enabled by default)
 
-#### المتطلبات:
+#### Requirements:
 
 ```env
-# في .env.local
+# In .env.local
 GOOGLE_CLIENT_ID="your-client-id"
 GOOGLE_CLIENT_SECRET="your-client-secret"
 ```
 
-**الإعداد**:
+**Setup**:
 
-1. اذهب إلى [Google Cloud Console](https://console.cloud.google.com/)
-2. أنشئ OAuth 2.0 credentials
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create OAuth 2.0 credentials
 3. Redirect URI: `http://localhost:3000/api/auth/callback/google`
-4. أضف credentials في `.env.local`
+4. Add credentials in `.env.local`
 
-### ❌ للتعطيل
+### ❌ To Disable
 
-#### الخطوة 1: تعطيل في `src/lib/auth.ts`
+#### Step 1: Disable in `src/lib/auth.ts`
 
 ```typescript
 export const auth = betterAuth({
   // ... database config
-  // احذف هذا القسم
+  // Remove this section
   // socialProviders: {
   //   google: {
   //     clientId: process.env.GOOGLE_CLIENT_ID || "",
@@ -166,12 +166,12 @@ export const auth = betterAuth({
 });
 ```
 
-#### الخطوة 2: حذف UI من `src/app/(auth)/sign-in/page.tsx`
+#### Step 2: Remove UI from `src/app/(auth)/sign-in/page.tsx`
 
-احذف:
+Remove:
 
 ```typescript
-// احذف Google Sign In button
+// Remove Google Sign In button
 {
   /* Google Sign In */
 }
@@ -187,14 +187,14 @@ export const auth = betterAuth({
 </Button>;
 ```
 
-#### الخطوة 3: حذف UI من `src/app/(auth)/sign-up/page.tsx`
+#### Step 3: Remove UI from `src/app/(auth)/sign-up/page.tsx`
 
-احذف نفس الـ Google button.
+Remove the same Google button.
 
-#### الخطوة 4: حذف المتغيرات من `.env.local`
+#### Step 4: Remove variables from `.env.local`
 
 ```env
-# احذف هذه
+# Remove these
 # GOOGLE_CLIENT_ID=...
 # GOOGLE_CLIENT_SECRET=...
 ```
@@ -203,40 +203,40 @@ export const auth = betterAuth({
 
 ## 3. Magic Link
 
-### ✅ للتفعيل (مُفعّل افتراضياً)
+### ✅ To Enable (enabled by default)
 
-#### المتطلبات:
+#### Requirements:
 
 ```env
-# في .env.local
+# In .env.local
 RESEND_API_KEY="re_your_api_key"
 EMAIL_FROM="onboarding@resend.dev"
 ```
 
-**الإعداد**: اقرأ [Email Service Guide](./EMAIL_SERVICE.md)
+**Setup**: Read [Email Service Guide](./EMAIL_SERVICE.md)
 
-### ❌ للتعطيل
+### ❌ To Disable
 
-#### الخطوة 1: حذف plugin من `src/lib/auth.ts`
+#### Step 1: Remove plugin from `src/lib/auth.ts`
 
 ```typescript
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-// احذف هذا
+// Remove this
 // import { magicLink } from "better-auth/plugins";
 
 export const auth = betterAuth({
   // ... database config
 
   plugins: [
-    // احذف magicLink من plugins
+    // Remove magicLink from plugins
     // magicLink({
     //   sendMagicLink: async ({ email, url }) => {
     //     // ...
     //   },
     // }),
 
-    // اترك emailOTP إذا كنت تستخدمه
+    // Keep emailOTP if you're using it
     emailOTP({
       // ...
     }),
@@ -244,32 +244,32 @@ export const auth = betterAuth({
 });
 ```
 
-#### الخطوة 2: حذف plugin من `src/lib/auth-client.ts`
+#### Step 2: Remove plugin from `src/lib/auth-client.ts`
 
 ```typescript
 "use client";
 
 import { createAuthClient } from "better-auth/react";
-// احذف هذا
+// Remove this
 // import { magicLinkClient } from "better-auth/client/plugins";
 import { emailOTPClient } from "better-auth/client/plugins";
 
 export const authClient = createAuthClient({
   baseURL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
   plugins: [
-    // احذف magicLinkClient
+    // Remove magicLinkClient
     // magicLinkClient(),
     emailOTPClient(),
   ],
 });
 ```
 
-#### الخطوة 3: حذف UI من `src/app/(auth)/sign-in/page.tsx`
+#### Step 3: Remove UI from `src/app/(auth)/sign-in/page.tsx`
 
-احذف:
+Remove:
 
 ```typescript
-// 1. احذف من tabs
+// 1. Remove from tabs
 <button
   type="button"
   onClick={() => setAuthMethod("magic")}
@@ -278,16 +278,16 @@ export const authClient = createAuthClient({
   Magic Link
 </button>
 
-// 2. احذف Magic Link form
+// 2. Remove Magic Link form
 {authMethod === "magic" && (
-  // ... احذف كل محتوى Magic Link
+  // ... remove all Magic Link content
 )}
 ```
 
-#### الخطوة 4: حذف template من `src/lib/email-templates.ts`
+#### Step 4: Remove template from `src/lib/email-templates.ts`
 
 ```typescript
-// احذف هذه الدالة
+// Remove this function
 // export function magicLinkTemplate(url: string) {
 //   // ...
 // }
@@ -297,27 +297,27 @@ export const authClient = createAuthClient({
 
 ## 4. Email OTP
 
-### ✅ للتفعيل (مُفعّل افتراضياً)
+### ✅ To Enable (enabled by default)
 
-#### المتطلبات:
+#### Requirements:
 
 ```env
-# في .env.local
+# In .env.local
 RESEND_API_KEY="re_your_api_key"
 EMAIL_FROM="onboarding@resend.dev"
 ```
 
-**الإعداد**: اقرأ [Email Service Guide](./EMAIL_SERVICE.md)
+**Setup**: Read [Email Service Guide](./EMAIL_SERVICE.md)
 
-### ❌ للتعطيل
+### ❌ To Disable
 
-#### الخطوة 1: حذف plugin من `src/lib/auth.ts`
+#### Step 1: Remove plugin from `src/lib/auth.ts`
 
 ```typescript
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { magicLink } from "better-auth/plugins";
-// احذف هذا
+// Remove this
 // import { emailOTP } from "better-auth/plugins";
 
 export const auth = betterAuth({
@@ -325,10 +325,10 @@ export const auth = betterAuth({
 
   plugins: [
     magicLink({
-      // اترك magicLink إذا كنت تستخدمه
+      // Keep magicLink if you're using it
     }),
 
-    // احذف emailOTP
+    // Remove emailOTP
     // emailOTP({
     //   async sendVerificationOTP({ email, otp, type }) {
     //     // ...
@@ -341,32 +341,32 @@ export const auth = betterAuth({
 });
 ```
 
-#### الخطوة 2: حذف plugin من `src/lib/auth-client.ts`
+#### Step 2: Remove plugin from `src/lib/auth-client.ts`
 
 ```typescript
 "use client";
 
 import { createAuthClient } from "better-auth/react";
 import { magicLinkClient } from "better-auth/client/plugins";
-// احذف هذا
+// Remove this
 // import { emailOTPClient } from "better-auth/client/plugins";
 
 export const authClient = createAuthClient({
   baseURL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
   plugins: [
     magicLinkClient(),
-    // احذف emailOTPClient
+    // Remove emailOTPClient
     // emailOTPClient(),
   ],
 });
 ```
 
-#### الخطوة 3: حذف UI من `src/app/(auth)/sign-in/page.tsx`
+#### Step 3: Remove UI from `src/app/(auth)/sign-in/page.tsx`
 
-احذف:
+Remove:
 
 ```typescript
-// 1. احذف من tabs
+// 1. Remove from tabs
 <button
   type="button"
   onClick={() => setAuthMethod("otp")}
@@ -375,16 +375,16 @@ export const authClient = createAuthClient({
   OTP
 </button>
 
-// 2. احذف OTP form
+// 2. Remove OTP form
 {authMethod === "otp" && (
-  // ... احذف كل محتوى OTP
+  // ... remove all OTP content
 )}
 ```
 
-#### الخطوة 4: حذف template من `src/lib/email-templates.ts`
+#### Step 4: Remove template from `src/lib/email-templates.ts`
 
 ```typescript
-// احذف هذه الدالة
+// Remove this function
 // export function otpTemplate(otp: string, type: string) {
 //   // ...
 // }
@@ -394,22 +394,22 @@ export const authClient = createAuthClient({
 
 ## 5. Password Reset
 
-### ✅ للتفعيل (مُفعّل افتراضياً)
+### ✅ To Enable (enabled by default)
 
-#### المتطلبات:
+#### Requirements:
 
-- Email & Password يجب أن يكون مُفعّل
+- Email & Password must be enabled
 - Resend API
 
 ```env
-# في .env.local
+# In .env.local
 RESEND_API_KEY="re_your_api_key"
 EMAIL_FROM="onboarding@resend.dev"
 ```
 
-### ❌ للتعطيل
+### ❌ To Disable
 
-#### الخطوة 1: حذف من `src/lib/auth.ts`
+#### Step 1: Remove from `src/lib/auth.ts`
 
 ```typescript
 export const auth = betterAuth({
@@ -418,7 +418,7 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
-    // احذف sendResetPassword
+    // Remove sendResetPassword
     // sendResetPassword: async ({ user, url }) => {
     //   await sendEmail({
     //     to: user.email,
@@ -432,17 +432,17 @@ export const auth = betterAuth({
 });
 ```
 
-#### الخطوة 2: حذف الصفحات
+#### Step 2: Remove Pages
 
 ```bash
 rm src/app/(auth)/forgot-password/page.tsx
 rm src/app/(auth)/reset-password/page.tsx
 ```
 
-#### الخطوة 3: حذف الرابط من `src/app/(auth)/sign-in/page.tsx`
+#### Step 3: Remove Link from `src/app/(auth)/sign-in/page.tsx`
 
 ```typescript
-// احذف هذا
+// Remove this
 {
   /* <div className="text-sm">
   <Link href="/forgot-password" ...>
@@ -452,16 +452,16 @@ rm src/app/(auth)/reset-password/page.tsx
 }
 ```
 
-#### الخطوة 4: حذف template من `src/lib/email-templates.ts`
+#### Step 4: Remove template from `src/lib/email-templates.ts`
 
 ```typescript
-// احذف هذه الدالة
+// Remove this function
 // export function passwordResetTemplate(url: string) {
 //   // ...
 // }
 ```
 
-#### الخطوة 5: حذف exports من `src/lib/auth-client.ts`
+#### Step 5: Remove exports from `src/lib/auth-client.ts`
 
 ```typescript
 export const {
@@ -469,7 +469,7 @@ export const {
   signUp,
   signOut,
   useSession,
-  // احذف هذه
+  // Remove these
   // forgetPassword,
   // resetPassword,
   sendVerificationEmail,
@@ -480,22 +480,22 @@ export const {
 
 ## 6. Email Verification
 
-### ✅ للتفعيل (مُفعّل افتراضياً)
+### ✅ To Enable (enabled by default)
 
-#### المتطلبات:
+#### Requirements:
 
-- Email & Password يجب أن يكون مُفعّل
+- Email & Password must be enabled
 - Resend API
 
 ```env
-# في .env.local
+# In .env.local
 RESEND_API_KEY="re_your_api_key"
 EMAIL_FROM="onboarding@resend.dev"
 ```
 
-### ❌ للتعطيل (غير موصى به)
+### ❌ To Disable (not recommended)
 
-#### الخطوة 1: تعطيل في `src/lib/auth.ts`
+#### Step 1: Disable in `src/lib/auth.ts`
 
 ```typescript
 export const auth = betterAuth({
@@ -503,14 +503,14 @@ export const auth = betterAuth({
 
   emailAndPassword: {
     enabled: true,
-    // غيّر إلى false
-    requireEmailVerification: false, // ⚠️ غير موصى به
+    // Change to false
+    requireEmailVerification: false, // ⚠️ Not recommended
     sendResetPassword: async ({ user, url }) => {
       // ...
     },
   },
 
-  // احذف أو عطّل emailVerification section بالكامل
+  // Remove or disable emailVerification section entirely
   // emailVerification: {
   //   sendOnSignUp: true,
   //   autoSignInAfterVerification: true,
@@ -523,10 +523,10 @@ export const auth = betterAuth({
 });
 ```
 
-#### الخطوة 2: حذف template من `src/lib/email-templates.ts`
+#### Step 2: Remove template from `src/lib/email-templates.ts`
 
 ```typescript
-// احذف هذه الدالة
+// Remove this function
 // export function emailVerificationTemplate(url: string, userName?: string) {
 //   // ...
 // }
@@ -534,88 +534,88 @@ export const auth = betterAuth({
 
 ---
 
-## 📝 ملاحظات مهمة
+## 📝 Important Notes
 
-### 1️⃣ التبعيات بين الطرق
+### 1️⃣ Dependencies Between Methods
 
 ```
 Email & Password
-    ├─ Password Reset (يعتمد عليه)
-    └─ Email Verification (اختياري)
+    ├─ Password Reset (depends on it)
+    └─ Email Verification (optional)
 
-Google OAuth (مستقل)
+Google OAuth (independent)
 
-Magic Link (مستقل)
+Magic Link (independent)
 
-Email OTP (مستقل)
+Email OTP (independent)
 ```
 
-### 2️⃣ الملفات الأساسية التي لا تُحذف
+### 2️⃣ Core Files That Should Not Be Deleted
 
-**لا تحذف هذه الملفات أبداً:**
+**Never delete these files**:
 
 - `src/lib/db/schema.ts` - Database schema
 - `src/lib/db/index.ts` - Database client
-- `src/lib/auth.ts` - Auth config (عدّل فقط)
-- `src/lib/auth-client.ts` - Auth client (عدّل فقط)
+- `src/lib/auth.ts` - Auth config (modify only)
+- `src/lib/auth-client.ts` - Auth client (modify only)
 - `src/app/api/auth/[...all]/route.ts` - API handler
 
 ### 3️⃣ Email Templates
 
-- يمكنك حذف templates من `src/lib/email-templates.ts` للطرق غير المستخدمة
-- إذا لم تستخدم أي طريقة تحتاج email، يمكنك حذف:
+- You can delete templates from `src/lib/email-templates.ts` for unused methods
+- If you don't use any method that requires email, you can delete:
   - `src/lib/email.ts`
   - `src/lib/email-templates.ts`
 
 ### 4️⃣ Environment Variables
 
-احذف فقط المتغيرات للطرق غير المستخدمة:
+Only delete variables for unused methods:
 
 ```env
-# Email & Password - لا يحتاج متغيرات إضافية
+# Email & Password - doesn't need additional variables
 
-# Google OAuth - احذف إذا لم تستخدمه
+# Google OAuth - remove if not using
 GOOGLE_CLIENT_ID="..."
 GOOGLE_CLIENT_SECRET="..."
 
-# Email features - احذف إذا لم تستخدم Magic Link/OTP/Reset/Verification
+# Email features - remove if not using Magic Link/OTP/Reset/Verification
 RESEND_API_KEY="..."
 EMAIL_FROM="..."
 ```
 
 ---
 
-## 🎯 Quick Reference - مرجع سريع
+## 🎯 Quick Reference
 
-### تفعيل/تعطيل سريع
+### Quick Enable/Disable
 
-| أريد استخدام           | الخطوات                                                                                 |
-| ---------------------- | --------------------------------------------------------------------------------------- |
-| **Email/Password فقط** | 1. احذف Google OAuth<br>2. احذف Magic Link<br>3. احذف OTP<br>4. احتفظ بـ Password Reset |
-| **Google فقط**         | 1. احذف Email/Password<br>2. احذف Magic Link<br>3. احذف OTP<br>4. احذف Password Reset   |
-| **Passwordless فقط**   | 1. احذف Email/Password<br>2. احذف Google OAuth<br>3. احتفظ بـ Magic Link و/أو OTP       |
-| **كل شيء**             | لا تغيير - كل شيء مُفعّل بالفعل!                                                        |
+| I want to use           | Steps                                                                                         |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
+| **Email/Password only** | 1. Remove Google OAuth<br>2. Remove Magic Link<br>3. Remove OTP<br>4. Keep Password Reset     |
+| **Google only**         | 1. Remove Email/Password<br>2. Remove Magic Link<br>3. Remove OTP<br>4. Remove Password Reset |
+| **Passwordless only**   | 1. Remove Email/Password<br>2. Remove Google OAuth<br>3. Keep Magic Link and/or OTP           |
+| **Everything**          | No changes - everything is already enabled!                                                   |
 
 ---
 
-## 🔧 اختبار بعد التعديل
+## 🔧 Test After Changes
 
-بعد كل تعديل:
+After each change:
 
 ```bash
-# 1. تأكد من عدم وجود أخطاء
+# 1. Make sure no errors
 npm run lint
 
-# 2. أعد تشغيل التطبيق
+# 2. Restart the app
 npm run dev
 
-# 3. اختبر الطرق المُفعّلة فقط
+# 3. Test only enabled methods
 http://localhost:3000/sign-in
 ```
 
 ---
 
-## 📚 المزيد
+## 📚 More
 
 - [Email Service Setup](./EMAIL_SERVICE.md)
 - [Authentication Methods Overview](../auth-methods/README.md)
@@ -623,4 +623,4 @@ http://localhost:3000/sign-in
 
 ---
 
-**بالتوفيق! 🚀**
+**Good luck! 🚀**

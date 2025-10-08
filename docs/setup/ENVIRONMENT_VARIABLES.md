@@ -1,37 +1,37 @@
 # 🔑 Environment Variables Guide
 
-دليل شامل لجميع المتغيرات البيئية المطلوبة في المشروع.
+Complete guide for all required environment variables in the project.
 
 ---
 
-## 📋 جدول المحتويات
+## 📋 Table of Contents
 
-- [الملف المطلوب](#الملف-المطلوب)
-- [المتغيرات الأساسية](#المتغيرات-الأساسية)
-- [المتغيرات الاختيارية](#المتغيرات-الاختيارية)
-- [أمثلة حسب السيناريو](#أمثلة-حسب-السيناريو)
+- [Required File](#required-file)
+- [Required Variables](#required-variables)
+- [Optional Variables](#optional-variables)
+- [Examples by Scenario](#examples-by-scenario)
 
 ---
 
-## 📁 الملف المطلوب
+## 📁 Required File
 
-أنشئ ملف `.env.local` في الـ root directory:
+Create `.env.local` file in the root directory:
 
 ```bash
-# في المجلد الرئيسي للمشروع
+# In project root directory
 touch .env.local
 
-# أو في Windows
+# Or on Windows
 type nul > .env.local
 ```
 
-⚠️ **هام**: ملف `.env.local` مُضاف إلى `.gitignore` تلقائياً - **لا تضفه إلى Git!**
+⚠️ **Important**: `.env.local` is automatically added to `.gitignore` - **don't add it to Git!**
 
 ---
 
-## 🔴 المتغيرات الأساسية (Required)
+## 🔴 Required Variables
 
-هذه المتغيرات **مطلوبة** لعمل التطبيق:
+These variables are **required** for the app to work:
 
 ### 1. Database Connection
 
@@ -39,22 +39,22 @@ type nul > .env.local
 DATABASE_URL="postgresql://username:password@localhost:5432/database_name"
 ```
 
-**مثال واقعي**:
+**Real example**:
 
 ```env
-# PostgreSQL محلي
+# Local PostgreSQL
 DATABASE_URL="postgresql://postgres:mypassword@localhost:5432/nextjs_auth"
 
-# PostgreSQL على Vercel/Supabase
+# PostgreSQL on Vercel/Supabase
 DATABASE_URL="postgresql://user:pass@db.xxx.supabase.co:5432/postgres"
 
-# PostgreSQL مع SSL
+# PostgreSQL with SSL
 DATABASE_URL="postgresql://user:pass@host:5432/db?sslmode=require"
 ```
 
-**كيف تحصل عليه**:
+**How to get it**:
 
-1. **محلياً**: استخدم بيانات PostgreSQL المحلي
+1. **Locally**: Use your local PostgreSQL data
 2. **Supabase**: Project Settings → Database → Connection String
 3. **Vercel**: Storage → Postgres → Connection String
 4. **Railway**: Database → Connect → Connection String
@@ -65,31 +65,31 @@ DATABASE_URL="postgresql://user:pass@host:5432/db?sslmode=require"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ```
 
-**في Production**:
+**In Production**:
 
 ```env
 NEXT_PUBLIC_APP_URL="https://yourdomain.com"
 ```
 
-⚠️ **لا تنسَ** `NEXT_PUBLIC_` prefix - هذا يجعل المتغير متاحاً في الـ client!
+⚠️ **Don't forget** `NEXT_PUBLIC_` prefix - this makes the variable available in client!
 
 ---
 
-## 🟡 المتغيرات الاختيارية (Optional)
+## 🟡 Optional Variables
 
-### 1. Google OAuth (اختياري)
+### 1. Google OAuth (Optional)
 
 ```env
 GOOGLE_CLIENT_ID="123456789-xxxxxxxxxxxxx.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET="GOCSPX-xxxxxxxxxxxxxx"
 ```
 
-**متى تحتاجه**: إذا كنت تستخدم Google Sign-In
+**When you need it**: If you're using Google Sign-In
 
-**كيف تحصل عليه**:
+**How to get it**:
 
-1. اذهب إلى [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project أو اختر مشروع موجود
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing one
 3. APIs & Services → Credentials
 4. Create Credentials → OAuth 2.0 Client ID
 5. Application type: Web application
@@ -97,85 +97,85 @@ GOOGLE_CLIENT_SECRET="GOCSPX-xxxxxxxxxxxxxx"
    - Development: `http://localhost:3000/api/auth/callback/google`
    - Production: `https://yourdomain.com/api/auth/callback/google`
 
-**الدليل الكامل**: [Google OAuth Guide](../auth-methods/GOOGLE_OAUTH.md)
+**Complete guide**: [Google OAuth Guide](../auth-methods/GOOGLE_OAUTH.md)
 
-### 2. Resend API (لـ Email Features)
+### 2. Resend API (for Email Features)
 
 ```env
 RESEND_API_KEY="re_xxxxxxxxxxxxxxxxxxxx"
 EMAIL_FROM="onboarding@resend.dev"
 ```
 
-**متى تحتاجه**: إذا كنت تستخدم:
+**When you need it**: If you're using:
 
 - ✉️ Email Verification
 - 🔄 Password Reset
 - ✨ Magic Link
 - 🔢 Email OTP
 
-**كيف تحصل عليه**:
+**How to get it**:
 
-1. سجل في [Resend](https://resend.com) (مجاني - 100 email/day)
-2. اذهب إلى API Keys
+1. Sign up at [Resend](https://resend.com) (free - 100 emails/day)
+2. Go to API Keys
 3. Create API Key
-4. انسخ الـ key
+4. Copy the key
 
 **EMAIL_FROM Options**:
 
 ```env
-# Domain تجريبي من Resend (للتطبيق المحلي)
+# Test domain from Resend (for local development)
 EMAIL_FROM="onboarding@resend.dev"
 
-# Domain خاص بك (في Production)
+# Your own domain (in Production)
 EMAIL_FROM="noreply@yourdomain.com"
 ```
 
-**الدليل الكامل**: [Email Service Guide](../guides/EMAIL_SERVICE.md)
+**Complete guide**: [Email Service Guide](../guides/EMAIL_SERVICE.md)
 
-### 3. Better Auth (اختياري في Development)
+### 3. Better Auth (Optional in Development)
 
 ```env
 BETTER_AUTH_SECRET="your-random-secret-key-minimum-32-characters-long"
 BETTER_AUTH_URL="http://localhost:3000"
 ```
 
-**متى تحتاجه**:
+**When you need it**:
 
-- ⚠️ **مطلوب في Production**
-- ✅ اختياري في Development (Better Auth يولد واحد تلقائياً)
+- ⚠️ **Required in Production**
+- ✅ Optional in Development (Better Auth generates one automatically)
 
-**كيف تولده**:
+**How to generate it**:
 
 ```bash
-# في terminal
+# In terminal
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
-# أو
+# Or
 openssl rand -hex 32
 ```
 
 ---
 
-## 🎯 أمثلة حسب السيناريو
+## 🎯 Examples by Scenario
 
-### السيناريو 1: Email/Password فقط (بدون Email Verification)
+### Scenario 1: Email/Password Only (without Email Verification)
 
 ```env
-# الأساسيات
+# Basics
 DATABASE_URL="postgresql://postgres:password@localhost:5432/nextjs_auth"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
-# لا حاجة لـ:
+# Not needed:
 # - GOOGLE_CLIENT_ID
 # - GOOGLE_CLIENT_SECRET
 # - RESEND_API_KEY
 # - EMAIL_FROM
 ```
 
-### السيناريو 2: Email/Password + Google OAuth
+### Scenario 2: Email/Password + Google OAuth
 
 ```env
-# الأساسيات
+# Basics
 DATABASE_URL="postgresql://postgres:password@localhost:5432/nextjs_auth"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
@@ -183,25 +183,25 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 GOOGLE_CLIENT_ID="123456789-xxxxx.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET="GOCSPX-xxxxxx"
 
-# لا حاجة لـ Resend إذا لم تستخدم email features
+# Resend not needed if not using email features
 ```
 
-### السيناريو 3: Email/Password + Email Verification
+### Scenario 3: Email/Password + Email Verification
 
 ```env
-# الأساسيات
+# Basics
 DATABASE_URL="postgresql://postgres:password@localhost:5432/nextjs_auth"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
-# Email Service (مطلوب)
+# Email Service (required)
 RESEND_API_KEY="re_xxxxxxxxxxxx"
 EMAIL_FROM="onboarding@resend.dev"
 ```
 
-### السيناريو 4: جميع الميزات
+### Scenario 4: All Features
 
 ```env
-# الأساسيات
+# Basics
 DATABASE_URL="postgresql://postgres:password@localhost:5432/nextjs_auth"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
@@ -213,15 +213,15 @@ GOOGLE_CLIENT_SECRET="GOCSPX-xxxxxx"
 RESEND_API_KEY="re_xxxxxxxxxxxx"
 EMAIL_FROM="onboarding@resend.dev"
 
-# Optional في Development
+# Optional in Development
 BETTER_AUTH_SECRET="your-secret-key-here"
 BETTER_AUTH_URL="http://localhost:3000"
 ```
 
-### السيناريو 5: Production Setup
+### Scenario 5: Production Setup
 
 ```env
-# الأساسيات
+# Basics
 DATABASE_URL="postgresql://user:pass@production-db.com:5432/db?sslmode=require"
 NEXT_PUBLIC_APP_URL="https://yourdomain.com"
 
@@ -233,19 +233,19 @@ GOOGLE_CLIENT_SECRET="GOCSPX-xxxxxx"
 RESEND_API_KEY="re_xxxxxxxxxxxx"
 EMAIL_FROM="noreply@yourdomain.com"
 
-# مطلوب في Production!
+# Required in Production!
 BETTER_AUTH_SECRET="your-super-secret-key-minimum-32-characters"
 BETTER_AUTH_URL="https://yourdomain.com"
 ```
 
 ---
 
-## ✅ التحقق من الإعداد
+## ✅ Verify Setup
 
-بعد إنشاء `.env.local`، تأكد أنه يعمل:
+After creating `.env.local`, make sure it works:
 
 ```typescript
-// أنشئ ملف test في root: test-env.mjs
+// Create test file in root: test-env.mjs
 console.log(
   "Database URL:",
   process.env.DATABASE_URL ? "✅ Set" : "❌ Missing"
@@ -262,41 +262,41 @@ console.log(
 ```
 
 ```bash
-# شغّله
+# Run it
 node test-env.mjs
 
-# ثم احذفه
+# Then delete it
 rm test-env.mjs
 ```
 
 ---
 
-## 🔒 الأمان (Security)
+## 🔒 Security
 
-### ✅ افعل:
+### ✅ Do:
 
-- ✅ أضف `.env.local` إلى `.gitignore`
-- ✅ استخدم secrets مختلفة لكل environment
-- ✅ استخدم `.env.example` كـ template للفريق
-- ✅ استخدم environment variables في CI/CD
+- ✅ Add `.env.local` to `.gitignore`
+- ✅ Use different secrets for each environment
+- ✅ Use `.env.example` as template for team
+- ✅ Use environment variables in CI/CD
 
-### ❌ لا تفعل:
+### ❌ Don't:
 
-- ❌ **أبداً** تضف `.env.local` إلى Git
-- ❌ **أبداً** تشارك secrets في المحادثات أو Screenshots
-- ❌ لا تستخدم نفس DATABASE_URL للـ Development و Production
-- ❌ لا تستخدم weak secrets في Production
+- ❌ **Never** add `.env.local` to Git
+- ❌ **Never** share secrets in conversations or Screenshots
+- ❌ Don't use same DATABASE_URL for Development and Production
+- ❌ Don't use weak secrets in Production
 
 ---
 
-## 🔄 التحديث بعد التغيير
+## 🔄 Restart After Changes
 
-بعد تغيير `.env.local`، أعد تشغيل التطبيق:
+After changing `.env.local`, restart the app:
 
 ```bash
-# أوقف التطبيق (Ctrl+C)
+# Stop the app (Ctrl+C)
 
-# ثم شغّله مرة أخرى
+# Then run it again
 npm run dev
 ```
 
@@ -304,60 +304,60 @@ npm run dev
 
 ## 📁 Template File
 
-يوجد ملف `docs/setup/env.example` يحتوي على template كامل:
+There's a `docs/setup/env.example` file with complete template:
 
 ```bash
-# انسخه إلى .env.local
+# Copy it to .env.local
 cp docs/setup/env.example .env.local
 
-# ثم عدّل القيم حسب احتياجاتك
+# Then modify values according to your needs
 ```
 
 ---
 
-## 🐛 المشاكل الشائعة
+## 🐛 Common Issues
 
 ### 1. "DATABASE_URL is not set"
 
 ```bash
-# تأكد من:
-# 1. الملف اسمه .env.local (وليس .env أو env.local)
-# 2. الملف في root directory
-# 3. لا يوجد spaces حول =
-# 4. أعد تشغيل npm run dev
+# Make sure:
+# 1. File is named .env.local (not .env or env.local)
+# 2. File is in root directory
+# 3. No spaces around =
+# 4. Restart npm run dev
 ```
 
 ### 2. "Invalid connection string"
 
 ```bash
-# تأكد من Format:
+# Make sure Format:
 postgresql://username:password@host:port/database
 
-# مثال صحيح:
+# Correct example:
 DATABASE_URL="postgresql://postgres:mypass123@localhost:5432/mydb"
 ```
 
-### 3. NEXT*PUBLIC* variables لا تعمل
+### 3. NEXT*PUBLIC* variables not working
 
 ```bash
-# تأكد من:
-# 1. اسم المتغير يبدأ بـ NEXT_PUBLIC_
-# 2. أعد تشغيل npm run dev
-# 3. في client components فقط
+# Make sure:
+# 1. Variable name starts with NEXT_PUBLIC_
+# 2. Restart npm run dev
+# 3. In client components only
 ```
 
-### 4. Resend emails لا تُرسل
+### 4. Resend emails not sending
 
 ```bash
-# تأكد من:
-# 1. RESEND_API_KEY صحيح
-# 2. EMAIL_FROM domain verified (أو استخدم onboarding@resend.dev)
-# 3. تحقق من terminal للـ logs
+# Make sure:
+# 1. RESEND_API_KEY is correct
+# 2. EMAIL_FROM domain verified (or use onboarding@resend.dev)
+# 3. Check terminal for logs
 ```
 
 ---
 
-## 📚 المزيد
+## 📚 More
 
 - [Example Template](./env.example)
 - [Database Setup](./DATABASE_SETUP.md)
@@ -366,4 +366,4 @@ DATABASE_URL="postgresql://postgres:mypass123@localhost:5432/mydb"
 
 ---
 
-**Environment Variables هي أساس الأمان والـ Configuration! 🔑**
+**Environment Variables are the foundation of security and configuration! 🔑**

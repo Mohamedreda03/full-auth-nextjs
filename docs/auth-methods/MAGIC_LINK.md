@@ -1,35 +1,35 @@
 # ✨ Magic Link Authentication
 
-دليل كامل لتسجيل الدخول بدون كلمة مرور عبر Magic Link.
+Complete guide for passwordless sign-in via Magic Link.
 
 ---
 
-## ✅ الحالة
+## ✅ Status
 
-**مُفعّل** - يحتاج Resend API للعمل.
-
----
-
-## 📋 المتطلبات
-
-- ✅ قاعدة بيانات PostgreSQL
-- 📧 **Resend API key** (مطلوب!)
+**Enabled** - Needs Resend API to work.
 
 ---
 
-## 🔧 الإعداد
+## 📋 Requirements
+
+- ✅ PostgreSQL database
+- 📧 **Resend API key** (required!)
+
+---
+
+## 🔧 Setup
 
 ### 1. Resend API
 
 ```env
-# في .env.local
+# In .env.local
 RESEND_API_KEY="re_your_api_key_here"
 EMAIL_FROM="onboarding@resend.dev"
 ```
 
-📖 **الدليل الكامل**: [Email Service Guide](../guides/EMAIL_SERVICE.md)
+📖 **Complete guide**: [Email Service Guide](../guides/EMAIL_SERVICE.md)
 
-### 2. Configuration في `src/lib/auth.ts`
+### 2. Configuration in `src/lib/auth.ts`
 
 ```typescript
 import { betterAuth } from "better-auth";
@@ -54,7 +54,7 @@ export const auth = betterAuth({
 });
 ```
 
-### 3. Client Plugin في `src/lib/auth-client.ts`
+### 3. Client Plugin in `src/lib/auth-client.ts`
 
 ```typescript
 import { createAuthClient } from "better-auth/react";
@@ -68,9 +68,9 @@ export const authClient = createAuthClient({
 
 ---
 
-## 🎨 الواجهة (UI)
+## 🎨 UI (User Interface)
 
-### في Sign-In Page
+### In Sign-In Page
 
 ```typescript
 import { authClient } from "@/lib/auth-client";
@@ -94,29 +94,29 @@ async function handleMagicLink(data: { email: string }) {
 
 ---
 
-## 🔄 التدفق (Flow)
+## 🔄 Flow
 
 ```
-1. المستخدم يُدخل بريده
+1. User enters email
    ↓
-2. Better Auth يُولّد magic link token
+2. Better Auth generates magic link token
    ↓
-3. Email يُرسل عبر Resend
+3. Email sent via Resend
    ↓
-4. المستخدم يفتح بريده
+4. User opens email
    ↓
-5. يضغط Magic Link
+5. Clicks Magic Link
    ↓
-6. Better Auth يتحقق من token
+6. Better Auth verifies token
    ↓
-7. تسجيل دخول تلقائي
+7. Automatic sign-in
    ↓
-8. Redirect إلى callbackURL
+8. Redirect to callbackURL
 ```
 
 ---
 
-## 📁 الملفات المطلوبة
+## 📁 Required Files
 
 ### Core Files
 
@@ -131,107 +131,107 @@ async function handleMagicLink(data: { email: string }) {
 
 ---
 
-## 🧪 الاختبار
+## 🧪 Testing
 
 ```bash
-# 1. تأكد من Resend API في .env.local
+# 1. Make sure Resend API in .env.local
 RESEND_API_KEY="re_..."
 EMAIL_FROM="onboarding@resend.dev"
 
-# 2. أعد تشغيل التطبيق
+# 2. Restart application
 npm run dev
 
-# 3. اذهب إلى sign-in
+# 3. Go to sign-in
 http://localhost:3000/sign-in
 
-# 4. اختر "Magic Link" tab
+# 4. Choose "Magic Link" tab
 
-# 5. أدخل بريدك
+# 5. Enter your email
 
-# 6. تحقق من بريدك (تحقق من Spam!)
+# 6. Check your email (check Spam!)
 
-# 7. اضغط الرابط
+# 7. Click the link
 
-# 8. يجب أن تسجل دخول تلقائياً
+# 8. Should sign in automatically
 ```
 
 ---
 
-## ❌ التعطيل
+## ❌ Disable
 
-### 1. حذف من `src/lib/auth.ts`
+### 1. Remove from `src/lib/auth.ts`
 
 ```typescript
-// احذف import
+// Remove import
 // import { magicLink } from "better-auth/plugins";
 
 export const auth = betterAuth({
   plugins: [
-    // احذف من plugins array
+    // Remove from plugins array
     // magicLink({ ... }),
   ],
 });
 ```
 
-### 2. حذف من `src/lib/auth-client.ts`
+### 2. Remove from `src/lib/auth-client.ts`
 
 ```typescript
-// احذف import
+// Remove import
 // import { magicLinkClient } from "better-auth/client/plugins";
 
 export const authClient = createAuthClient({
   plugins: [
-    // احذف من plugins
+    // Remove from plugins
     // magicLinkClient(),
   ],
 });
 ```
 
-### 3. حذف UI Tab
+### 3. Remove UI Tab
 
-احذف Magic Link tab من `src/app/(auth)/sign-in/page.tsx`
+Remove Magic Link tab from `src/app/(auth)/sign-in/page.tsx`
 
-### 4. حذف Template
+### 4. Remove Template
 
-احذف `magicLinkTemplate` من `src/lib/email-templates.ts`
+Remove `magicLinkTemplate` from `src/lib/email-templates.ts`
 
 ---
 
-## 🐛 المشاكل الشائعة
+## 🐛 Common Issues
 
-### 1. Email لا يصل
+### 1. Email not arriving
 
 ```bash
-# تحقق من:
-✅ RESEND_API_KEY صحيح
-✅ EMAIL_FROM verified (أو استخدم onboarding@resend.dev)
-✅ تحقق من Spam folder
-✅ تحقق من terminal logs
+# Check:
+✅ RESEND_API_KEY is correct
+✅ EMAIL_FROM verified (or use onboarding@resend.dev)
+✅ Check Spam folder
+✅ Check terminal logs
 ```
 
 ### 2. "Invalid or expired magic link"
 
 ```bash
-# الأسباب:
-- الرابط مُستخدم مسبقاً (Magic links تُستخدم مرة واحدة)
-- الرابط expired (15 دقيقة افتراضياً)
-- اطلب magic link جديد
+# Reasons:
+- Link already used (Magic links are one-time use)
+- Link expired (15 minutes by default)
+- Request a new magic link
 ```
 
-### 3. يعمل في Development ولا يعمل في Production
+### 3. Works in Development but not Production
 
 ```bash
-# تأكد من:
-✅ RESEND_API_KEY في production environment
-✅ NEXT_PUBLIC_APP_URL صحيح
-✅ EMAIL_FROM domain verified في production
+# Make sure:
+✅ RESEND_API_KEY in production environment
+✅ NEXT_PUBLIC_APP_URL is correct
+✅ EMAIL_FROM domain verified in production
 ```
 
 ---
 
-## ⚙️ التخصيص
+## ⚙️ Customization
 
-### تغيير مدة الصلاحية
+### Change Expiry Time
 
 ```typescript
 magicLink({
@@ -242,23 +242,23 @@ magicLink({
 }),
 ```
 
-### Custom Redirect بعد تسجيل الدخول
+### Custom Redirect after Sign-In
 
 ```typescript
-// في UI
+// In UI
 await authClient.signIn.magicLink({
   email: data.email,
-  callbackURL: "/dashboard", // بدل /
+  callbackURL: "/dashboard", // instead of /
 });
 ```
 
 ### Custom Email Template
 
-عدّل `magicLinkTemplate` في `src/lib/email-templates.ts`
+Modify `magicLinkTemplate` in `src/lib/email-templates.ts`
 
 ---
 
-## 📚 المزيد
+## 📚 More
 
 - [Email Service Setup](../guides/EMAIL_SERVICE.md)
 - [Better Auth Magic Link Docs](https://www.better-auth.com/docs/plugins/magic-link)
@@ -266,4 +266,4 @@ await authClient.signIn.magicLink({
 
 ---
 
-**Magic Link = أمان + سهولة استخدام! ✨**
+**Magic Link = Security + Ease of Use! ✨**

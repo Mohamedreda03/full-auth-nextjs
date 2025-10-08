@@ -1,111 +1,111 @@
-# إعداد قاعدة البيانات PostgreSQL
+# PostgreSQL Database Setup
 
-## 1. تثبيت PostgreSQL محلياً
+## 1. Install PostgreSQL Locally
 
-### على Windows:
+### On Windows:
 
-1. قم بتحميل PostgreSQL من [الموقع الرسمي](https://www.postgresql.org/download/windows/)
-2. قم بتثبيت PostgreSQL (احفظ كلمة المرور التي تدخلها!)
-3. افتح pgAdmin أو psql
+1. Download PostgreSQL from [Official Website](https://www.postgresql.org/download/windows/)
+2. Install PostgreSQL (save the password you enter!)
+3. Open pgAdmin or psql
 
-### إنشاء قاعدة بيانات جديدة:
+### Create New Database:
 
 ```sql
 CREATE DATABASE nextjs_auth;
 ```
 
-## 2. إنشاء ملف .env.local
+## 2. Create .env.local File
 
-في جذر المشروع، قم بإنشاء ملف `.env.local` وأضف:
+In the project root, create `.env.local` and add:
 
 ```env
-# Database - استبدل البيانات بمعلومات قاعدة بياناتك
+# Database - replace with your database information
 DATABASE_URL="postgresql://postgres:your_password@localhost:5432/nextjs_auth"
 
 # App URL
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
-# Better Auth - قم بتوليد مفتاح سري قوي
+# Better Auth - generate a strong secret key
 BETTER_AUTH_SECRET="your-secret-key-change-this-in-production"
 BETTER_AUTH_URL="http://localhost:3000"
 
-# Google OAuth (اختياري - للحصول عليها اتبع الخطوات أدناه)
+# Google OAuth (optional - follow steps below to get them)
 GOOGLE_CLIENT_ID="your-google-client-id"
 GOOGLE_CLIENT_SECRET="your-google-client-secret"
 ```
 
-### تفاصيل DATABASE_URL:
+### DATABASE_URL Details:
 
 ```
 postgresql://[user]:[password]@[host]:[port]/[database]
 ```
 
-- `user`: عادة `postgres`
-- `password`: كلمة المرور التي أدخلتها عند التثبيت
-- `host`: `localhost` للقاعدة المحلية
-- `port`: `5432` (الافتراضي)
-- `database`: اسم قاعدة البيانات التي أنشأتها (مثل `nextjs_auth`)
+- `user`: usually `postgres`
+- `password`: password you entered during installation
+- `host`: `localhost` for local database
+- `port`: `5432` (default)
+- `database`: name of database you created (like `nextjs_auth`)
 
-## 3. تشغيل الـ migrations لإنشاء الجداول
+## 3. Run Migrations to Create Tables
 
-بعد إنشاء ملف `.env.local`، قم بتشغيل:
+After creating `.env.local`, run:
 
 ```bash
 npm run db:push
 ```
 
-هذا سينشئ الجداول التالية في قاعدة البيانات:
+This will create the following tables in the database:
 
-- `user` - بيانات المستخدمين
-- `session` - الجلسات
-- `account` - حسابات OAuth
-- `verification` - رموز التحقق
+- `user` - user data
+- `session` - sessions
+- `account` - OAuth accounts
+- `verification` - verification codes
 
-## 4. الحصول على Google OAuth Credentials (اختياري)
+## 4. Get Google OAuth Credentials (Optional)
 
-إذا كنت تريد تسجيل الدخول عبر Google:
+If you want Google Sign-In:
 
-1. اذهب إلى [Google Cloud Console](https://console.cloud.google.com/)
-2. أنشئ مشروع جديد أو اختر مشروع موجود
-3. فعّل Google+ API
-4. اذهب إلى "Credentials" → "Create Credentials" → "OAuth client ID"
-5. اختر "Web application"
-6. أضف Authorized redirect URIs:
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing one
+3. Enable Google+ API
+4. Go to "Credentials" → "Create Credentials" → "OAuth client ID"
+5. Choose "Web application"
+6. Add Authorized redirect URIs:
    - `http://localhost:3000/api/auth/callback/google`
-7. انسخ Client ID و Client Secret إلى ملف `.env.local`
+7. Copy Client ID and Client Secret to `.env.local`
 
-## 5. التحقق من الإعداد
+## 5. Verify Setup
 
-لعرض قاعدة البيانات والجداول:
+To view database and tables:
 
 ```bash
 npm run db:studio
 ```
 
-هذا سيفتح Drizzle Studio في المتصفح حيث يمكنك رؤية وإدارة البيانات.
+This will open Drizzle Studio in browser where you can see and manage data.
 
-## 6. تشغيل التطبيق
+## 6. Run Application
 
 ```bash
 npm run dev
 ```
 
-ثم قم بزيارة:
+Then visit:
 
 - Sign Up: http://localhost:3000/sign-up
 - Sign In: http://localhost:3000/sign-in
 
-## مشاكل شائعة وحلولها
+## Common Issues and Solutions
 
-### خطأ: "connection refused"
+### Error: "connection refused"
 
-- تأكد من أن PostgreSQL يعمل
-- تحقق من أن المنفذ 5432 غير محظور
+- Make sure PostgreSQL is running
+- Check that port 5432 is not blocked
 
-### خطأ: "password authentication failed"
+### Error: "password authentication failed"
 
-- تحقق من كلمة المرور في DATABASE_URL
+- Check password in DATABASE_URL
 
-### خطأ: "database does not exist"
+### Error: "database does not exist"
 
-- قم بإنشاء قاعدة البيانات أولاً باستخدام pgAdmin أو psql
+- Create database first using pgAdmin or psql

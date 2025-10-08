@@ -1,49 +1,49 @@
-# إعداد خدمة البريد الإلكتروني
+# Email Service Setup
 
-لكي تعمل ميزات **Magic Link**، **OTP**، و **Password Reset**، تحتاج إلى إعداد خدمة إرسال البريد الإلكتروني.
+For **Magic Link**, **OTP**, and **Password Reset** features to work, you need to set up an email service.
 
 ---
 
-## الخيارات المتاحة
+## Available Options
 
-### 1. 🚀 Resend (موصى به - الأسهل)
+### 1. 🚀 Resend (Recommended - Easiest)
 
-[Resend](https://resend.com) هي خدمة بريد إلكتروني حديثة ومصممة للمطورين.
+[Resend](https://resend.com) is a modern email service designed for developers.
 
-#### المزايا:
+#### Advantages:
 
-- ✅ سهلة الإعداد جداً
-- ✅ 100 إيميل مجاني يومياً
-- ✅ API بسيط جداً
-- ✅ دعم ممتاز للمطورين
+- ✅ Very easy setup
+- ✅ 100 free emails per day
+- ✅ Very simple API
+- ✅ Excellent developer support
 
-#### خطوات الإعداد:
+#### Setup Steps:
 
-1. **التسجيل في Resend**:
+1. **Sign up for Resend**:
 
-   - اذهب إلى [resend.com](https://resend.com)
-   - أنشئ حساب مجاني
+   - Go to [resend.com](https://resend.com)
+   - Create a free account
 
-2. **الحصول على API Key**:
+2. **Get API Key**:
 
-   - بعد تسجيل الدخول، اذهب إلى "API Keys"
-   - اضغط "Create API Key"
-   - انسخ الـ API Key
+   - After logging in, go to "API Keys"
+   - Click "Create API Key"
+   - Copy the API Key
 
-3. **تثبيت مكتبة Resend**:
+3. **Install Resend library**:
 
    ```bash
    npm install resend
    ```
 
-4. **إضافة المتغيرات في `.env.local`**:
+4. **Add variables in `.env.local`**:
 
    ```env
    RESEND_API_KEY="re_your_api_key_here"
-   EMAIL_FROM="onboarding@resend.dev"  # أو نطاقك الخاص
+   EMAIL_FROM="onboarding@resend.dev"  # or your own domain
    ```
 
-5. **إنشاء Email Service** (`src/lib/email.ts`):
+5. **Create Email Service** (`src/lib/email.ts`):
 
    ```typescript
    import { Resend } from "resend";
@@ -82,32 +82,32 @@
 
 ---
 
-### 2. 📧 Gmail SMTP (للتطوير المحلي)
+### 2. 📧 Gmail SMTP (for Local Development)
 
-استخدم Gmail لإرسال الإيميلات (مناسب للتطوير فقط).
+Use Gmail to send emails (suitable for development only).
 
-#### خطوات الإعداد:
+#### Setup Steps:
 
-1. **تفعيل 2-Step Verification في Gmail**:
+1. **Enable 2-Step Verification in Gmail**:
 
-   - اذهب إلى [Google Account Security](https://myaccount.google.com/security)
-   - فعّل "2-Step Verification"
+   - Go to [Google Account Security](https://myaccount.google.com/security)
+   - Enable "2-Step Verification"
 
-2. **إنشاء App Password**:
+2. **Create App Password**:
 
-   - اذهب إلى [App Passwords](https://myaccount.google.com/apppasswords)
-   - اختر "Mail" و "Other (Custom name)"
-   - سم التطبيق (مثلاً: "Next.js Auth")
-   - انسخ كلمة المرور المكونة من 16 حرف
+   - Go to [App Passwords](https://myaccount.google.com/apppasswords)
+   - Choose "Mail" and "Other (Custom name)"
+   - Name the app (e.g., "Next.js Auth")
+   - Copy the generated 16-character password
 
-3. **تثبيت nodemailer**:
+3. **Install nodemailer**:
 
    ```bash
    npm install nodemailer
    npm install --save-dev @types/nodemailer
    ```
 
-4. **إضافة المتغيرات في `.env.local`**:
+4. **Add variables in `.env.local`**:
 
    ```env
    SMTP_HOST="smtp.gmail.com"
@@ -117,12 +117,12 @@
    EMAIL_FROM="your-email@gmail.com"
    ```
 
-5. **إنشاء Email Service** (`src/lib/email.ts`):
+5. **Create Email Service** (`src/lib/email.ts`):
 
    ```typescript
    import nodemailer from "nodemailer";
 
-   const transporter = nodemailer.createTransport({
+   const transporter = nodemailer.createTransporter({
      host: process.env.SMTP_HOST,
      port: Number(process.env.SMTP_PORT),
      secure: false,
@@ -158,47 +158,47 @@
    }
    ```
 
-⚠️ **ملاحظة**: Gmail لديه حد 500 إيميل يومياً، ولا يُنصح به للإنتاج.
+⚠️ **Note**: Gmail has a limit of 500 emails per day and is not recommended for production.
 
 ---
 
-### 3. 📮 SendGrid (للإنتاج)
+### 3. 📮 SendGrid (for Production)
 
-[SendGrid](https://sendgrid.com) خدمة احترافية مع خطة مجانية جيدة.
+[SendGrid](https://sendgrid.com) is a professional service with a good free plan.
 
-#### المزايا:
+#### Advantages:
 
-- ✅ 100 إيميل مجاني يومياً (دائماً)
-- ✅ موثوقية عالية
-- ✅ إحصائيات مفصلة
+- ✅ 100 free emails per day (always)
+- ✅ High reliability
+- ✅ Detailed statistics
 
-#### خطوات الإعداد:
+#### Setup Steps:
 
-1. **التسجيل في SendGrid**:
+1. **Sign up for SendGrid**:
 
-   - اذهب إلى [sendgrid.com](https://sendgrid.com)
-   - أنشئ حساب مجاني
+   - Go to [sendgrid.com](https://sendgrid.com)
+   - Create a free account
 
-2. **الحصول على API Key**:
+2. **Get API Key**:
 
    - Settings → API Keys
    - Create API Key
-   - انسخ الـ API Key
+   - Copy the API Key
 
-3. **تثبيت مكتبة SendGrid**:
+3. **Install SendGrid library**:
 
    ```bash
    npm install @sendgrid/mail
    ```
 
-4. **إضافة المتغيرات في `.env.local`**:
+4. **Add variables in `.env.local`**:
 
    ```env
    SENDGRID_API_KEY="SG.your_api_key_here"
    EMAIL_FROM="noreply@yourdomain.com"
    ```
 
-5. **إنشاء Email Service** (`src/lib/email.ts`):
+5. **Create Email Service** (`src/lib/email.ts`):
 
    ```typescript
    import sgMail from "@sendgrid/mail";
@@ -230,9 +230,9 @@
 
 ---
 
-## إنشاء Email Templates
+## Create Email Templates
 
-بعد إعداد خدمة البريد، قم بإنشاء قوالب البريد الإلكتروني:
+After setting up the email service, create email templates:
 
 ### 1. Magic Link Email
 
@@ -350,9 +350,9 @@ export function passwordResetEmail(link: string) {
 
 ---
 
-## اختبار إرسال البريد
+## Test Email Sending
 
-بعد الإعداد، اختبر إرسال البريد:
+After setup, test email sending:
 
 ```typescript
 // test-email.ts
@@ -377,12 +377,12 @@ npx tsx test-email.ts
 
 ---
 
-## الخلاصة
+## Summary
 
-| الخدمة         | الأفضل لـ      | السعر           | السهولة    |
-| -------------- | -------------- | --------------- | ---------- |
-| **Resend**     | الجميع         | مجاني (100/يوم) | ⭐⭐⭐⭐⭐ |
-| **Gmail SMTP** | التطوير المحلي | مجاني           | ⭐⭐⭐     |
-| **SendGrid**   | الإنتاج        | مجاني (100/يوم) | ⭐⭐⭐⭐   |
+| Service        | Best For          | Price          | Ease       |
+| -------------- | ----------------- | -------------- | ---------- |
+| **Resend**     | Everyone          | Free (100/day) | ⭐⭐⭐⭐⭐ |
+| **Gmail SMTP** | Local Development | Free           | ⭐⭐⭐     |
+| **SendGrid**   | Production        | Free (100/day) | ⭐⭐⭐⭐   |
 
-**التوصية**: استخدم **Resend** - الأسهل والأسرع للإعداد! 🚀
+**Recommendation**: Use **Resend** - easiest and fastest to set up! 🚀
